@@ -1,0 +1,304 @@
+@charset "UTF-8";
+
+body {
+    font-family: 'THSarabunNew';
+}
+.sidebar {
+    font-family: 'THSarabunNew';
+}
+a, div, h1, h2, h3, h4, h5, p, span {
+    font-family: 'THSarabunNew';
+}
+.justify-content-end { justify-content: flex-start !important; }
+.form-control { padding: 0.375rem 0.75rem; }
+.btn-login {
+    width: 100%;
+    background-color: #ae0f1f;
+    color: #FFFF;
+    height: 40px;
+ }
+ .navbar .navbar-menu-wrapper .navbar-nav .nav-item .nav-link {
+    color: black;
+    font-size: 12px;
+}
+.navbar {
+    background: #FFFF;
+}
+.navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .count-indicator i {
+    color: black;
+}
+.navbar .navbar-brand-wrapper {
+    background: #2D2D35;
+}
+nav#sidebar {
+    background: #2D2D35;
+}
+
+.text-center.navbar-brand-wrapper.d-flex.align-items-top.justify-content-center {
+    padding: 10px;
+}
+
+.sidebar .nav .nav-item.active > .nav-link .menu-title, .sidebar .nav .nav-item.active > .nav-link i , .sidebar-title , i.mdi.mdi-checkbox-blank-circle-outline{
+    color: #FFFF;
+}
+.sidebar-title{
+    padding: 10px;
+    padding-top: 15px;
+}
+
+a.nav-link {
+    font-weight: 500;
+    font-size: 18px;
+}
+ul.sidebar-nav {
+    margin-top: 20px;
+}
+
+li.nav-item.sidebar-nav-item.active {
+    background: #AD0018;
+}
+
+.sidebar .nav:not(.sub-menu) > .nav-item:hover:not(.nav-profile) > .nav-link, a.sidebar-nav-item:hover
+{
+ background-color: #AD0018;
+}
+.btn-add {
+    color: #fff;
+    background-color: #AD003A;
+    border-color: #AD003A;
+}
+.title-page{
+    font-weight: bold;
+}
+.table-responsive {
+    margin-top: 30px;
+}
+.table .head-table th {
+    color: #59668B;
+    background-color: #F6F8FB;
+    border-color: #C7C7C7;
+}
+
+.navbar .navbar-brand-wrapper .navbar-brand:hover {
+    color: #ffffff;
+}
+
+.font-weight-medium {
+    font-family: "Sarabun", sans-serif;
+    font-weight: 500;
+}
+
+.input-group-append {
+    height: 32px;
+}
+.dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+.dot.wait { background-color: #FF7D00; }
+.dot.approve { background-color: #33AF8A; }
+.dot.primary { background-color: #bb60be; }
+.dot.info { background-color: #021db480; }
+.dot.close {
+        float: left;
+        background-color: #FF2424;
+        opacity: 1;
+}
+.navbar .navbar-menu-wrapper .navbar-toggler {
+    border: 0;
+    color: black;
+    margin-right: 0;
+}
+
+.text-center{ text-align: center; }
+
+span.red{
+    color: #FF2424;
+}
+ol.breadcrumb { border: 0px; padding: 0;}
+.btn.btn-print {
+    background: #4C9FFE;
+    color: #FFFF;
+}
+.btn.btn-print-send {
+    background: #3AA8DF;
+    color: #FFFF;
+}
+.btn:disabled{
+    color: #A9A9A9;
+    background : #EFEFEF;
+}
+.btn-add:hover {
+    color: #EFEFEF;
+    text-decoration: none;
+}
+.btn:hover {
+    color: #EFEFEF;
+    text-decoration: none;
+}
+.btn-upload {
+    color: #FFFF;
+    background: #33467A;
+}
+.text-disable{
+    color: #A9A9A9;
+}
+button.btn.btn-fw {
+    padding: 10px;
+    margin-left: 15px;
+}
+.btn-secondary {
+    color: #FFFF;
+    background-color: #656566;
+    border-color: #656566;
+}
+span.label_upload { padding-left: 7px; }
+.m-t-15{
+    margin-top: 15px;
+}
+
+.dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list.noti.pb-0.show {
+    width: 300px;
+    height: auto;
+    border-radius: 6%;
+    /* max-height: 350px; */
+    /* overflow-y: scroll; */
+}
+/* width */
+div.box-noti::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  div.box-noti::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  div.box-noti::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  div.box-noti::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+div.box-noti {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-height: 350px;
+    overflow-y: scroll;
+    width: 300px;
+    overflow-x: hidden;
+}
+div.form-inline.p-t-20
+{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+a.dropdown-noti {
+    display: flex;
+    padding-top: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    /* border-bottom: 1px solid #C7C7C7; */
+    padding-bottom: 9px;
+    overflow: hidden;
+}
+div.preview-thumbnail.noti
+{
+    padding-top: 5px;
+}
+img.img-noti {
+    max-width: 25px;
+}
+div.preview-item-content.noti {
+    padding-left: 15px;
+}
+p.small-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+span.noti-date{
+    font-size: 10px;
+    color: #A9A9A9;
+}
+
+.sidebar .nav .nav-item .nav-link .menu-title {
+    font-size: 20px;
+    color: #FFFF;
+}
+a.nav-link.sidebar-nav-item > i {
+    color: #FFFF;
+}
+.sidebar .nav .nav-item .nav-link[aria-expanded="true"] {
+    background: #2D2D35;
+}
+.sidebar .nav .nav-item .collapse.show, .sidebar .nav .nav-item .collapsing {
+    background: #2D2D35;
+}
+.sidebar .nav .nav-item .nav-link[aria-expanded="true"].active {
+    background: #AD0018;
+}
+.sidebar .nav .nav-item .nav-link label.sidebar-submenu {
+    font-size: 14px;
+}
+li.nav-item.sidebar-nav-item.users-meun.submenu.active {
+    background: none;
+}
+.sidebar .nav .nav-item.active > .nav-link .sidebar-submenu{
+    color: #AD0018;
+}
+ul.nav.flex-column.sub-menu {
+    padding: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+    margin-left: 20px;
+}
+ul li.submenu::marker  {
+    content: "\2022";
+    color:#FFFF;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: 15px;
+  }
+ul li.submenu.active::marker  {
+    content: "\2022";
+    color:#AD0018;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: 15px;
+  }
+  .sidebar .nav .nav-item .nav-link i.menu-arrow:before {
+      color: #FFFF;
+  }
+.btn.btn-export-excle{
+    color: #fff;
+    background-color: #90af33;
+    border-color: #90af33;
+}
+textarea {
+    resize: vertical;
+}
+button.btn[disabled]:hover {
+    color: #A9A9A9;
+    text-decoration: none;
+    border: none;
+}
+button.btn:disabled {
+    color: #A9A9A9;
+    text-decoration: none;
+    border: none;
+}
+div.footer-table {
+    padding: 20px 15px 20px 15px;
+}
+div.dataTables_paginate {
+    float: right;
+}
+
