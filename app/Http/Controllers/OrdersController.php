@@ -307,6 +307,7 @@ class OrdersController extends Controller
             ->leftjoin('master_amphoe as amphoe','amphoe.amphoe_code','=','master_customer.amphoe_code')
             ->leftjoin('master_district as district','district.district_code','=','master_customer.district_code')
             ->where('master_customer.id',$quotation->customer_id)->with('PocketMoney')->first();
+            
             $pocketmoney = !empty($customer->PocketMoney) ? $customer->PocketMoney->pocket_money : '0.00';
         }else{
             $customer = CustomerOther::where('id',$quotation->customer_id)->first();

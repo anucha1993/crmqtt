@@ -52,9 +52,10 @@ class PaymentHistoryController extends Controller
             ->select('payment_history.*', 'order_delivery.order_delivery_number')
             ->leftJoin('order_delivery', 'order_delivery.order_delivery_id', '=', 'payment_history.order_delivery_id')
             ->get();
+         $CustomerPocket = DB::table('customer_pocket_history')->where('customer_id',$orders->customer_id)->first();
 
         // ส่งข้อมูลไปยัง view
-        return view('payment_history.payment-history', compact('orders', 'paymentHistory', 'paymentType'));
+        return view('payment_history.payment-history', compact('orders', 'paymentHistory', 'paymentType','CustomerPocket'));
     }
 
 
@@ -117,7 +118,6 @@ class PaymentHistoryController extends Controller
             $delivery->update(['status_payment' => 2]);
         }
 
-        
 
         $statusPayment = 0;
         $statusPaymentSub = 0;
@@ -126,6 +126,20 @@ class PaymentHistoryController extends Controller
             $statusPayment = 1;
         } elseif ($order->GetDepositSum() > 0) {
             $statusPayment = 2;
+        }
+
+        $checkPocket = DB::table('payment_type')->where('payment_type_id', $PaymentHistory->payment_type)->first();
+        $CustomerPocket = DB::table('customer_pocket_history')->where('customer_id', $order->customer_id)->first();
+        
+        if ($checkPocket->payment_pocket_money === 'Y') {
+            $CustomerPocketMoney = $CustomerPocket->pocket_money;
+            $paymentTotal = $PaymentHistory->total;
+            $pocketNew = $CustomerPocketMoney - $paymentTotal; // แก้ไขลำดับการคำนวณ
+        
+            // ใช้ DB::table()->where()->update() ในการอัปเดตข้อมูล
+            DB::table('customer_pocket_history')->where('customer_id', $order->customer_id)->update([
+                'pocket_money' => $pocketNew
+            ]);
         }
 
         $delivery->update(['money_deposit' => $paymentSum]);
@@ -139,7 +153,7 @@ class PaymentHistoryController extends Controller
 
     public function cancelPayment(PaymentHistory $PaymentHistory)
     {
-        $PaymentHistory->update(['status' => 2]);
+        $PaymentHistory->update(['status' => 4]);
         $order = Orders::where('id', $PaymentHistory->order_id)->first();
         $statusPayment = 0;
 

@@ -107,6 +107,9 @@ if (!function_exists('statusPaymentStr')) {
         else if($status == 3) {
             $htmlstatus = '<span class="dot primary"></span> รอตรวจสอบยอด';
         }
+        else if($status == 4) {
+            $htmlstatus = '<span class="dot close"></span> ไม่สำเร็จ';
+        }
         return $htmlstatus;
     }
 }

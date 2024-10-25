@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentHistoryController;
+use App\Http\Controllers\PaymentMethodPocketMoneyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +161,7 @@ Route::group(['middleware' => ['authweb']], function () {
 
 Route::post('form/print', [FormController::class, 'printForm'])->name('form.print');
 
+Route::put('/pocketmoney/update/{CustomerPocketHistory}',[PaymentMethodPocketMoneyController::class,'updatePocketMoney'])->name('updatePocketMoney');
 
 
 

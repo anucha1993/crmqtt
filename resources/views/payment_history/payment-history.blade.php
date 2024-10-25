@@ -56,12 +56,20 @@
                         <p class="title_order">{{number_format($orders->vat,2)}}</p>
                     </div>
                 </div>
+
                 <div class="input-group col-sm-2 input-header">
                     <label class="col-sm-12 header-title">ยอดรวมสั่งซื้อทั้งสิ้น</label>
                     <div class="col-sm-12">
                         <p class="title_order">{{number_format($orders->total,2)}}</p>
                     </div>
                 </div>
+                <div class="input-group col-sm-2 input-header">
+                    <label class="col-sm-12 header-title">Pocket Money</label>
+                    <div class="col-sm-12">
+                        <p class="title_order">{{number_format($CustomerPocket->pocket_money,2)}}</p>
+                    </div>
+                </div>
+
             </div>
             <div class="table-responsive">
                 <table class="table table-width">
@@ -111,7 +119,7 @@
                                 @if ($item->status === 3)
                                 <a href="{{route('payment.approvePayment',$item->id)}}"  onclick="return confirm('คุณต้องการอนุมัติยอดชำระ : ' + {{$item->total}} +' ใช่ไหม')" class="btn btn-sm btn-success "> ยืนยันยอด</a>
                                 <a href="{{route('payment.cancelPayment',$item->id)}}" class="btn btn-sm btn-danger " onclick="return confirm('คุณต้องการยกเลิกใช่ หรือไม่ ?')" > ยกเลิกยอด</a>
-                                @elseif ($item->status === 2)
+                                @elseif ($item->status === 4)
                                 <span class="dot close"></span> ไม่อนุมัติ
                                 @elseif ($item->status === 1)
                                 <span class="dot approve"></span> ทำรายการสำเร็จ

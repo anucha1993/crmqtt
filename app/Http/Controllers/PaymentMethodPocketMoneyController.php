@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PaymentMethodPocketMoney;
 use App\Models\PaymentHistory;
+use App\Models\CustomerPocketHistory;
+use App\Models\PaymentMethodPocketMoney;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -16,6 +17,17 @@ class PaymentMethodPocketMoneyController extends Controller
 		PaymentMethodPocketMoney::where('order_id',$request->id)->update(['amount'=>$request->amount]);
 		
         return NULL;
+    }
+
+
+    public function updatePocketMoney(Request $request, CustomerPocketHistory $CustomerPocketHistory)
+    {
+        $CustomerPocketHistory->update([
+            'pocket_money' => $request->recieve_pocket_new,
+            'updated_at' => date(now())
+        ]);
+
+        return redirect()->back();
     }
 	
 	public function add_payment_method_pocket_money(Request $request) {

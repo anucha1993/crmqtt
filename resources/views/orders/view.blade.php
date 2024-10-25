@@ -440,7 +440,7 @@
                                 <select name="payment_type" required class="form-control form-control-sm select_payment" onchange="selectpaymenttype()">
                         <option value="">เลือกการจ่ายเงิน</option>
                         @forelse ($paymentType as $item)
-                        <option value="{{$item->payment_type_id}}">{{$item->payment_type_name}}</option>
+                        <option @if($item->payment_type_id === $orders->payment_type)  selected @endif value="{{$item->payment_type_id}}">{{$item->payment_type_name}}</option>
                         @empty
                             
                         @endforelse

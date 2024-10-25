@@ -59,6 +59,11 @@
         background: #33467A;
     }
 
+    button.btn.btn-edit-pocket {
+        color: #FFFF;
+        background: #33467A;
+    }
+
     .modal-body {
      background: #FFFF;
      padding-left: 30px;
@@ -161,7 +166,12 @@
                                 <p class="text-detail">ข้อมูล ณ วันที่ <span id="time">{{date('d/m/Y H:i:s')}}</span></p>
                             </div>
                             <div class="box-right">
-                                <button class="btn btn-add-pocket" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่ม Pocket</button>
+                                @if (isset($pockethistory))
+                                <button class="btn btn-edit-pocket" data-toggle="modal" data-target="#myModal-edit"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่ม Pocket</button>
+                                @else
+                                <button class="btn btn-add-pocket" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่ม Pocket ใหม่</button>
+                                @endif
+                               
                             </div>
                         </div>
                     </div>
@@ -173,11 +183,11 @@
                           <th> ลำดับ </th>
                           <th> วันที่ทำรายการ </th>
                           <th> หัวข้อ </th>
-                          <th> หมายเหตุ </th>
-                          <th> ไฟล์ </th>
-                          <th> Pocket ปัจจุบัน </th>
-                          <th> เพิ่ม Pocket </th>
-                          <th> ใช้ Pocket </th>
+                          {{-- <th> หมายเหตุ </th>
+                          <th> ไฟล์ </th> --}}
+                          {{-- <th> Pocket ปัจจุบัน </th> --}}
+                          {{-- <th> เพิ่ม Pocket </th> --}}
+                          {{-- <th> ใช้ Pocket </th> --}}
                           <th> Pocket Money คงเหลือ </th>
                         </tr>
                       </thead>
@@ -207,10 +217,11 @@
                         <div class="col-sm-12">
                             <label class="col-sm-8">กรอกจำนวนเงิน :<span class="red">*</span></label>
                             <div class="input-group col-sm-12">
-                                <input class="form-control text-right" type="text" data-type="currency" required name="recieve_pocket" id="recieve_pocket" value="" placeholder="กรอกจำนวนเงิน....">
+                                <input class="form-control text-right"  type="text" data-type="currency" required name="recieve_pocket" id="recieve_pocket" value="{{isset($pockethistory) ? number_format($pockethistory->pocket_money,2) : '0.00'}}" placeholder="กรอกจำนวนเงิน....">
                             </div>
                         </div>
                     </div>
+
                     <div class="row m-t-15">
                         <div class="col-sm-12">
                             <label class="col-sm-8">หมายเหตุ :</label>
@@ -219,6 +230,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row m-t-15">
                         <div class="col-sm-12">
                             <label class="col-sm-8">แนบไฟล์ :</label>
@@ -250,6 +262,89 @@
     </div>
 </div>
 <!--End The Modal -->
+
+<!-- The Modal -->
+<div class="modal" id="myModal-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="customerformUpdate" enctype="multipart/form-data" action="{{route('updatePocketMoney',$pockethistory->id)}}" method="post">
+                   @csrf
+                   @method('put')
+                    <input type="hidden" name="customerid" value="{{$id}}">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="col-sm-12"><label class="title">เพิ่ม Pocket Money </label></h5>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="col-sm-8">ยอดเพิ่ม :<span class="red">*</span></label>
+                            <div class="input-group col-sm-12">
+                                <input class="form-control text-right" type="number" step="0.01" required  id="pocket-add" value="" placeholder="กรอกจำนวนเงิน....">
+                                <input  type="hidden" id="pocket-old"  value="{{isset($pockethistory) ? $pockethistory->pocket_money : 0.00 }}" placeholder="กรอกจำนวนเงิน....">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                           <label class="col-sm-12">จำนวนเงิน Pocket Money :<span class="red">*</span></label>
+                            <div class="input-group col-sm-12">
+                                <input readonly class="form-control text-right" type="text"  required name="recieve_pocket_new" id="recieve_pocketNew" value="" placeholder="คำนวนอัตโนมัติ">
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                   
+
+
+                    <div class="row m-t-15">
+                        <div class="col-sm-12">
+                            <label class="col-sm-8">หมายเหตุ :</label>
+                            <div class="input-group col-sm-12">
+                                <textarea  class="form-control" name="note_text" id="note_text" rows="6" placeholder="กรอกหมายเหตุ...."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="row m-t-15">
+                        <div class="col-sm-12">
+                            <label class="col-sm-8">แนบไฟล์ :</label>
+                            <div class="input-group col-sm-12">
+                                <label for="file-upload" class="btn btn-upload changfile">
+                                    <i class="fa fa-upload"></i> <span class="label_upload">เลือกไฟล์แนบ</span>
+                                </label>
+                                <input id="file-upload" type="file" name="file"  value="" style="display: none;" accept=" .jpg, .png, .pdf">
+                            </div>
+                            <p class="col-sm-12 warning-text text-disable" id="name_file">ยังไม่ได้แนบไฟล์ (.pdf,.jpg,.png)</p>
+                        </div>
+                    </div> --}}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group btn-model-box">
+                                <div class="col-sm-6">
+                                    <a href="javascript:void(0)" class="btn btn-secondary btn-fw " >ยกเลิก</a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="submit" form="customerformUpdate"  class="btn btn-primary btn-fw">ยืนยันทำรายการ</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End The Modal -->
+
 </div>
 
 @push('plugin-scripts')
@@ -260,6 +355,19 @@
 @endpush
 
 @push('custom-scripts')
+
+<script>
+  $('#pocket-add').on('keyup', function() {
+    var TotalNew = 0;
+    var pocketOld = parseFloat($('#pocket-old').val()) || 0;
+    var pocketAdd = parseFloat($('#pocket-add').val()) || 0;
+    TotalNew = pocketOld + pocketAdd;
+    $('#recieve_pocketNew').val(TotalNew.toFixed(2));
+});
+
+</script>
+
+
 <script>
     $('li.nav-item.sidebar-nav-item.customer-meun').addClass('active');
 

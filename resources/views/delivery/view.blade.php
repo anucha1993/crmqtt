@@ -90,8 +90,8 @@
                 overflow: hidden;
                 padding: 1rem;
                 /* padding-bottom: 1rem;
-                            padding-top: 1rem;
-                            padding-bottom: 1rem; */
+                                        padding-top: 1rem;
+                                        padding-bottom: 1rem; */
             }
 
             #tableBilling>thead>tr,
@@ -107,10 +107,10 @@
             }
 
             /* #title_header_delivery {
-                            background-color: ;
-                            border: 1px solid ;
-                            padding: 7px;
-                        } */
+                                        background-color: ;
+                                        border: 1px solid ;
+                                        padding: 7px;
+                                    } */
         }
     </style>
 @endpush
@@ -125,14 +125,14 @@
                             <h4 class="title-page">เพิ่มรายบิลย่อย {{ $deliverys->order_delivery_number }} (รายการบิลหลัก
                                 {{ $orders->order_number }})</h4>
                         </div>
-                        
+
                         <div class="text-right col-sm-6">
                             <a href="#"data-toggle="modal" data-target="#exampleModalCenter">แจ้งชำระเงิน</a> &nbsp;
                             {{-- <button href="#" class="btn btn-print " onclick="printBilling('tax')" {{(($orders->on_vat != '1') || $orders->status_payment == '0') ? 'disabled' : ''}}  ><i class="fa fa-print" aria-hidden="true"></i> Print ใบกำกับภาษี</button> --}}
                             <button type="button" class="btn btn-print " onclick="printBilling()"><i class="fa fa-print"
                                     aria-hidden="true"></i> Print ใบส่งของ</button>
 
-                                          
+
                         </div>
                     </div>
                     <hr>
@@ -482,6 +482,7 @@
                                         value="{{ $data_for_remarks->remark_5 }}"></label>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="crad">
@@ -500,6 +501,7 @@
                                                             <option {{ $deliverys->status == 0 ? 'selected' : '' }}
                                                                 value="0"> กำลังดำเนินการ</option>
                                                             <option {{ $deliverys->status == 1 ? 'selected' : '' }}
+                                                         
                                                                 value="1"> จัดส่งสำเร็จ</option>
                                                             <option {{ $deliverys->status == 2 ? 'selected' : '' }}
                                                                 value="2"> ยกเลิก</option>
@@ -527,7 +529,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-inline">
+                                        
+                                        {{-- <div class="form-inline">
                                             <div class="col-sm-6">
                                                 <div class="form-inline">
                                                     <p class="col-sm-8 m-t-15 warning-text text-right">สถานะการชำระเงิน
@@ -546,7 +549,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> 
+
                                         <div class="form-inline inputfile">
                                             <div class="col-sm-6">
                                                 <div class="form-inline">
@@ -563,6 +567,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="form-inline inputfile">
                                             <div class="col-sm-6">
                                                 <div class="form-inline">
@@ -571,6 +576,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        --}}
+
                                     </div>
                                 </div>
                             </div>
@@ -608,123 +615,133 @@
             </div>
         </div>
 
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">แจ้งชำระเงิน &nbsp; <span
-                            class="pull-right text-success" id="total-calculate"></span>
-                    </h5>
-                    <input type="hidden" id="order-total" value="{{ $orders->total - $orders->GetDepositSum() }}">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">แจ้งชำระเงิน &nbsp; <span id="pocket-grand"></span> <span
+                                class="pull-right text-success" id="total-calculate"></span>
+                        </h5>
+                        <input type="hidden" id="order-total" value="{{ $orders->total - $orders->GetDepositSum() }}">
+                        <input type="hidden" id="proket-total" value="{{ $orders->customer_type == 'customer' ? (!empty($customer->PocketMoney) ? $customer->PocketMoney->pocket_money : '0.00') : '0.00' }}">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('payment.store') }}" enctype="multipart/form-data" id="paymnet-store"
+                        method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="modal-body">
+
+                            <input type="hidden" name="order_id" value="{{ $orders->id }}">
+                            <input type="hidden" name="order_number" value="{{ $orders->order_number }}">
+                            <input type="hidden" name="order_delivery_id" value="{{ $deliverys->order_delivery_id }}">
+                            
+                            <label for="">ประเภทการชำระเงิน <span class="text-danger"> *</span></label>
+
+
+                            <select name="payment_type" id="payment-type" class="form-select form-control mb-3" required>
+                                <option value="">--เลือกการจ่ายเงิน--</option>
+                                @forelse ($paymentType as $item)
+                                    <option data-method="{{ $item->payment_type_method }}"
+                                        data-pocket-money="{{ $item->payment_pocket_money }}"
+                                        @if ($item->payment_type_id === $orders->payment_type) selected @endif
+                                        value="{{ $item->payment_type_id }}">{{ $item->payment_type_name }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+
+
+                            <label>จำนวนเงินที่ชำระ <span class="text-danger"> *</span></label>
+                            <input type="number" name="total" class="form-control mb-3 payment-total" step="0.01"
+                                value="{{ $deliverys->total - $deliverys->money_deposit }}">
+
+
+                            <label>วันที่ชำระ <span class="text-danger"> *</span></label>
+                            <input type="datetime-local" name="date_playment" class="form-control mb-3 "
+                                value="{{ date('Y-m-d H:m:s') }}">
+
+                            <label for="">แนบหลักฐานกาารชำระ</label><br>
+                            <input type="file" name="file">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                            <button type="submit" class="btn btn-primary" form="paymnet-store">บันทึก</button>
+                        </div>
+                    </form>
                 </div>
-                <form action="{{ route('payment.store') }}" enctype="multipart/form-data" id="paymnet-store"
-                    method="POST">
-                    @csrf
-                    @method('POST')
-                    <div class="modal-body">
-
-                        <input type="hidden" name="order_id" value="{{ $orders->id }}">
-                        <input type="hidden" name="order_number" value="{{ $orders->order_number}}">
-                        <input type="hidden" name="order_delivery_id" value="{{ $deliverys->order_delivery_id }}">
-
-                        <label for="">ประเภทการชำระเงิน <span class="text-danger"> *</span></label>
-
-
-                        <select name="payment_type" id="payment-type" class="form-select form-control mb-3" required>
-                            <option value="">--เลือกการจ่ายเงิน--</option>
-                            @forelse ($paymentType as $item)
-                                <option data-method="{{ $item->payment_type_method }}" @if($item->payment_type_id === $orders->payment_type) selected @endif
-                                    value="{{ $item->payment_type_id }}">{{ $item->payment_type_name }}</option>
-                            @empty
-                            @endforelse
-                        </select>
-                        
-
-                        <label>จำนวนเงินที่ชำระ <span class="text-danger"> *</span></label>
-                        <input type="number" name="total" class="form-control mb-3 payment-total" step="0.01"
-                            value="{{ $deliverys->total - $deliverys->money_deposit }}">
-
-
-                        <label>วันที่ชำระ <span class="text-danger"> *</span></label>
-                        <input type="datetime-local" name="date_playment" class="form-control mb-3 "
-                            value="{{ date('Y-m-d H:m:s') }}">
-
-                        <label for="">แนบหลักฐานกาารชำระ</label><br>
-                        <input type="file" name="file">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                        <button type="submit" class="btn btn-primary" form="paymnet-store">บันทึก</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div> 
 
 
         
+
+
         <script>
-    let printCount = 0; // ตัวนับการพิมพ์
-    let isPrinting = false; // ตัวบ่งชี้ว่ากำลังพิมพ์อยู่
+            let printCount = 0; // ตัวนับการพิมพ์
+            let isPrinting = false; // ตัวบ่งชี้ว่ากำลังพิมพ์อยู่
 
-    // จับเหตุการณ์ก่อนการพิมพ์
-    window.addEventListener('beforeprint', function() {
-        isPrinting = true; // ตั้งค่ากำลังพิมพ์
-        console.log('Preparing to print...');
-    });
+            // จับเหตุการณ์ก่อนการพิมพ์
+            window.addEventListener('beforeprint', function() {
+                isPrinting = true; // ตั้งค่ากำลังพิมพ์
+                console.log('Preparing to print...');
+            });
 
-    // จับเหตุการณ์หลังจากการพิมพ์
-    window.addEventListener('afterprint', function() {
-        console.log('Print dialog closed...');
+            // จับเหตุการณ์หลังจากการพิมพ์
+            window.addEventListener('afterprint', function() {
+                console.log('Print dialog closed...');
 
-        // ตรวจสอบว่าเป็นการพิมพ์จริง
-        if (isPrinting) {
-            // ใช้ setTimeout เพื่อเลื่อนการนับสักครู่
-            setTimeout(() => {
-                // ตรวจสอบว่าการพิมพ์เสร็จสมบูรณ์โดยการสร้างตัวแปรใหม่
-                let completedPrinting = confirm('หากคุณได้ปริ้นเอกสารกรุณา กดใช่ ตกลง ไม่ได้ปริ้นกด ยกเลิก เพื่อบันทึกจำนวนการปริ้นฟอร์ม');
+                // ตรวจสอบว่าเป็นการพิมพ์จริง
+                if (isPrinting) {
+                    // ใช้ setTimeout เพื่อเลื่อนการนับสักครู่
+                    setTimeout(() => {
+                        // ตรวจสอบว่าการพิมพ์เสร็จสมบูรณ์โดยการสร้างตัวแปรใหม่
+                        let completedPrinting = confirm(
+                            'หากคุณได้ปริ้นเอกสารกรุณา กดใช่ ตกลง ไม่ได้ปริ้นกด ยกเลิก เพื่อบันทึกจำนวนการปริ้นฟอร์ม'
+                        );
+                        window.location.reload();
 
-                if (completedPrinting) {
-                    printCount++; // เพิ่มค่าตัวนับการพิมพ์
-                    console.log('Printing completed...');
+                        if (completedPrinting) {
+                            printCount++; // เพิ่มค่าตัวนับการพิมพ์
+                            console.log('Printing completed...');
 
-                    // ตรวจสอบว่า meta tag csrf-token มีอยู่หรือไม่
-                    const csrfTokenMeta = document.querySelector('meta[name="_token"]');
-                    const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+                            // ตรวจสอบว่า meta tag csrf-token มีอยู่หรือไม่
+                            const csrfTokenMeta = document.querySelector('meta[name="_token"]');
+                            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
 
-                    // ส่งข้อมูลไปยังเซิร์ฟเวอร์ด้วย AJAX
-                    fetch('{{ route('form.print') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken // CSRF token
-                        },
-                        body: JSON.stringify({ count: printCount }) // ส่งจำนวนการพิมพ์
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
+                            // ส่งข้อมูลไปยังเซิร์ฟเวอร์ด้วย AJAX
+                            fetch('{{ route('form.print') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': csrfToken // CSRF token
+                                    },
+                                    body: JSON.stringify({
+                                        count: printCount
+                                    }) // ส่งจำนวนการพิมพ์
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    }
+                                    throw new Error('Network response was not ok.');
+                                })
+                                .then(data => console.log(data))
+                                .catch(error => console.error('Error:', error));
+                        } else {
+                            console.log('Printing was canceled or closed without printing.');
                         }
-                        throw new Error('Network response was not ok.');
-                    })
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Error:', error));
+
+                        // รีเซ็ตตัวบ่งชี้การพิมพ์
+                        isPrinting = false;
+                    }, 100); // รอ 100ms ก่อนการตรวจสอบ
                 } else {
                     console.log('Printing was canceled or closed without printing.');
                 }
-
-                // รีเซ็ตตัวบ่งชี้การพิมพ์
-                isPrinting = false;
-            }, 100); // รอ 100ms ก่อนการตรวจสอบ
-        } else {
-            console.log('Printing was canceled or closed without printing.');
-        }
-    });
-</script>
+            });
+        </script>
 
 
 
@@ -955,6 +972,46 @@
 
             }
         </script>
+
+        // Pocket Money
+        <script>
+    $(document).ready(function() {
+        // จับ event change ของ #payment-type และ .payment-total
+        $('#payment-type, .payment-total').on('change keyup', function() {
+            var pocket = $('#payment-type').find(':selected').data('pocket-money'); // ดึงค่าจาก option ที่เลือก
+            var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
+            var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
+
+            if (pocket === 'Y') {
+                var remaining = pocketTotal - total;
+                if (remaining < 0) {
+                    // ยอดในกระเป๋าไม่พอ
+                    alert('ยอดเงินในกระเป๋าไม่เพียงพอ');
+                    // เซ็ต total ให้เท่ากับ pocketTotal
+                    $('.payment-total').val(pocketTotal.toFixed(2));
+                    $('#pocket-grand').text('0.00'); // ยอดคงเหลือเป็น 0
+                } else {
+                    $('#pocket-grand').text(remaining.toFixed(2)); // แสดงยอดคงเหลือ
+                }
+            }
+        });
+
+        // ตรวจสอบก่อน submit
+        // $('#paymnet-store').on('submit', function(e) {
+        //     var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
+        //     var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
+
+        //     if (total > pocketTotal) {
+        //         // ถ้ายอดชำระมากกว่ายอดกระเป๋าเงิน ให้ป้องกันการ submit form
+        //         alert('ยอดชำระมากกว่ายอดในกระเป๋าเงิน');
+        //         e.preventDefault(); // ยกเลิกการ submit
+        //     }
+        // });
+    });
+</script>
+
+
+
     @endpush
 
 

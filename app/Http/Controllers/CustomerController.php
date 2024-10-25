@@ -344,13 +344,13 @@ class CustomerController extends Controller
 
     public function pocketmoney($id)
     {
-        $pockethistory = CustomerPocketHistory::select('pocket_money')->where('customer_id',$id)->orderby('created_at','desc')->first();
+        $pockethistory = CustomerPocketHistory::select('pocket_money','id')->where('customer_id',$id)->orderby('created_at','desc')->first();
         return view('customer.pocketmoney',compact('id','pockethistory'));
     }
 
     public function pocketmoneylist(Request $request)
     {
-        $query = CustomerPocketHistory::select('created_at','note','note_text','file','pocket_present','pocket_type','recieve_pocket','pocket_money')->where('customer_id',$request->customerid)->orderby('created_at','desc')->get();
+        $query = CustomerPocketHistory::select('updated_at','note','note_text','file','pocket_present','pocket_type','recieve_pocket','pocket_money')->where('customer_id',$request->customerid)->orderby('created_at','desc')->get();
         $datas = $query;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $limt_page = 10;
@@ -375,13 +375,13 @@ class CustomerController extends Controller
             foreach ($datas as $data) {
                 $html .= '<tr>';
                     $html .= '<td>' . ++$i . '</td>';
-                    $html .= '<td>' . date('d/m/Y H:i:s',strtotime($data->created_at)) . '</td>';
+                    $html .= '<td>' . date('d/m/Y H:i:s',strtotime($data->updated_at)) . '</td>';
                     $html .= '<td>' . $data->note . '</td>';
-                    $html .= '<td>' . $data->note_text . '</td>';
-                    $html .= '<td>' . ($data->file ? '<a href="'.url('storage/pocketmoney/'.$data->file).'" class="btn btn-link" target="_blank"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>' : '') . '</td>';
-                    $html .= '<td>' . number_format($data->pocket_present,2) . '</td>';
-                    $html .= '<td>' . ($data->pocket_type == 1 ? number_format($data->recieve_pocket,2) : '0.00') . '</td>';
-                    $html .= '<td>' . ($data->pocket_type == 2 ? number_format($data->recieve_pocket,2) : '0.00') . '</td>';
+                    // $html .= '<td>' . $data->note_text . '</td>';
+                    // $html .= '<td>' . ($data->file ? '<a href="'.url('storage/pocketmoney/'.$data->file).'" class="btn btn-link" target="_blank"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>' : '') . '</td>';
+                    // $html .= '<td>' . number_format($data->pocket_present,2) . '</td>';
+                    // $html .= '<td>' . ($data->pocket_type == 1 ? number_format($data->recieve_pocket,2) : '0.00') . '</td>';
+                    // $html .= '<td>' .  number_format($data->recieve_pocket - $data->pocket_money,2).'</td>';
                     $html .= '<td>' . number_format($data->pocket_money,2) . '</td>';
                 $html .= '</tr>';
             }
