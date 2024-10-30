@@ -39,7 +39,7 @@ class PaymentHistoryController extends Controller
 
         $newPaymentHistory =  PaymentHistory::create($arrayAddPaymentHistory);
 
-        return redirect()->to('orders');
+        return redirect()->to('orders/all');
     }
 
 

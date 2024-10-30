@@ -415,7 +415,7 @@ class OrdersController extends Controller
         }
 
 
-        return redirect()->to('orders');
+        return redirect()->to('orders/all');
     }
 	
 	public function assign_pocket_money() 
@@ -537,7 +537,7 @@ class OrdersController extends Controller
 		$orders = Orders::find($request->id);
 		$orders->payment_method_type_code = $request->payment_method_type_code;
 		$orders->save();
-        return redirect()->to('orders');;
+        return redirect()->to('orders/all');;
     }
 
     public function update(Request $request)
@@ -645,7 +645,7 @@ class OrdersController extends Controller
             }
         }
 
-        return redirect()->to('orders');
+        return redirect()->to('orders/all');
     }
 
     public function payment($id)
@@ -670,7 +670,7 @@ class OrdersController extends Controller
         ->get();
     
         $breadcrumb = [
-            ['url' => 'orders', 'title' => 'รายการบิลหลัก'],
+            ['url' => 'orders/all', 'title' => 'รายการบิลหลัก'],
             ['url' => 'orders/view/' . $orders->id, 'title' => 'รายการบิลหลัก ' . $orders->order_number],
             ['url' => '', 'title' => 'ประวัติการชำระ']
         ];
