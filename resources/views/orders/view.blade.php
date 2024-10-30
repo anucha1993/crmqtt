@@ -255,10 +255,10 @@
                             <button type="button" class="btn btn-print " onclick="printBilling_pera('order');"><i
                                     class="fa fa-print" aria-hidden="true"></i> Print บิล (บิลหลัก)</button>
                             <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                                {{-- <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ระบุประเภทการชำระเงิน
-                                </button>
+                                </button> --}}
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item"
                                         href="javascript:update_payment_method_type_code(1, '{{ $orders->id }}');"> One

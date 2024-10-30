@@ -66,7 +66,8 @@
                 <div class="input-group col-sm-2 input-header">
                     <label class="col-sm-12 header-title">Pocket Money</label>
                     <div class="col-sm-12">
-                        <p class="title_order">{{number_format($CustomerPocket->pocket_money,2)}}</p>
+                        <p class="title_order">{{ optional($CustomerPocket)->pocket_money ? number_format(optional($CustomerPocket)->pocket_money, 2) : '0.00' }}</p>
+
                     </div>
                 </div>
 
