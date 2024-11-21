@@ -5,6 +5,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PaymentMethodPocketMoneyController;
+use App\Http\Controllers\ReceiptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,3 +168,6 @@ Route::put('/pocketmoney/update/{CustomerPocketHistory}',[PaymentMethodPocketMon
 
 });
 
+Route::group(['middleware' => ['authweb']], function () {
+     Route::get('receipt/{id}',[ReceiptController::class,'generateReceipt'])->name('receipt');
+});

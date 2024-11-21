@@ -237,6 +237,8 @@
     }
 </script>
 @section('content')
+
+
     <div class="row">
         {!! breadcrumb($breadcrumb) !!}
         <div class="col-lg-12 grid-margin">
@@ -259,6 +261,8 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ระบุประเภทการชำระเงิน
                                 </button> --}}
+                                <a href="{{url('receipt/'.$orders->id)}}" class="btn "><i
+                                    class="fa fa-print" aria-hidden="true"></i> Print New</a>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item"
                                         href="javascript:update_payment_method_type_code(1, '{{ $orders->id }}');"> One

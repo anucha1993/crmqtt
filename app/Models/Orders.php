@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PaymentHistory;
 
@@ -25,29 +27,31 @@ class Orders extends Model
         'note',
         'payment_type',
         'file',
-		'remark_1',
-		'remark_2',
-		'remark_3',
-		'remark_4',
-		'remark_5',
+        'remark_1',
+        'remark_2',
+        'remark_3',
+        'remark_4',
+        'remark_5',
         'created_by',
         'updated_by',
         'created_at',
         'updated_at',
-		'delivery_location_id',
-		'payment_method_type_code',
+        'delivery_location_id',
+        'payment_method_type_code',
     ];
 
     public function GetDeposit()
     {
-        return $this->belongsTo(PaymentHistory::class,'id','order_id')->where('status',1);
+        return $this->belongsTo(PaymentHistory::class, 'id', 'order_id')->where('status', 1);
     }
 
     public function GetDepositSum()
-{
-    return $this->GetDeposit()->sum('total');
+    {
+        return $this->GetDeposit()->sum('total');
+    }
+
+    public function Customer()
+    {
+        return $this->belongsTo(MasterCustomer::class, 'customer_id', 'id');
+    }
 }
-
-
-}
-
