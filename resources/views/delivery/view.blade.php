@@ -131,7 +131,7 @@
                             {{-- <button href="#" class="btn btn-print " onclick="printBilling('tax')" {{(($orders->on_vat != '1') || $orders->status_payment == '0') ? 'disabled' : ''}}  ><i class="fa fa-print" aria-hidden="true"></i> Print ใบกำกับภาษี</button> --}}
                             <button type="button" class="btn btn-print " onclick="printBilling()"><i class="fa fa-print"
                                     aria-hidden="true"></i> Print ใบส่งของ</button>
-
+                            <a href="{{route('MPDF.delivery',$deliverys->order_delivery_id)}}" class="btn btn-sm btn-danger"><i class="fa fa-print"></i>ใบส่งของ (NEW)</a>
 
                         </div>
                     </div>

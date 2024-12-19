@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\MPDF_DeliveryController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\PaymentMethodPocketMoneyController;
@@ -170,4 +171,6 @@ Route::put('/pocketmoney/update/{CustomerPocketHistory}',[PaymentMethodPocketMon
 
 Route::group(['middleware' => ['authweb']], function () {
      Route::get('receipt/{id}',[ReceiptController::class,'generateReceipt'])->name('receipt');
+     // MPDF_Delivery
+     Route::get('mpdf/delivery/{id}',[MPDF_DeliveryController::class,'generateMPDF'])->name('MPDF.delivery');
 });
