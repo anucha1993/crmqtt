@@ -278,7 +278,13 @@ class MPDF_DeliveryController extends Controller
             $mpdf->WriteHTML($htmlPage1);
     
             // เพิ่มหน้าใหม่
-         $mpdf->AddPage();
+            $mpdf->AddPage();
+            $mpdf->WriteHTML($htmlPage1);
+
+            $mpdf->AddPage();
+            $mpdf->WriteHTML($htmlPage1);
+
+            $mpdf->AddPage();
     
             // สร้าง HTML สำหรับหน้าที่สอง
             $htmlPage2 = view('MPDF_Delivery.page-2',compact('order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();

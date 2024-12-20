@@ -48,6 +48,7 @@
         .footer p {
             margin: 15px 0;
         }
+       
     </style>
 </head>
 
@@ -80,16 +81,16 @@
                 <strong>น้ำหนักรวม:</strong> {{$datas_sub_total_delivery}} Kgs.
             </p>
         
-            <!-- ส่วนของ QR Code -->
-            <div style="margin-top: 0px; text-align: right;">
-                <img src="{{ $qrCodeImage }}" alt="QR Code" style="width: 100px; margin-right: -25px">
-              
-            </div>
+           
         </div>
+
         
 
         <div style="clear: both;"></div>
     </div>
+ <!-- ส่วนของ QR Code -->
+
+
 
     {{-- <div class="invoice-title">
         ใบเสร็จรับเงิน (ฉบับสำเนา 1)
@@ -97,18 +98,22 @@
     <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14pt;">
         <thead>
             <tr>
-                <td style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left;">
+                <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 350px">
                     <span><b>ชื่อลูกค้า :</b> {{$customer->store_name}}</span><br>
                     <span><b>ที่อยู่จัดส่ง :</b> {{$location_name}}</span><br>
                     <span><b>ชื่อผู้ติดต่อ:</b> {{$location_contact_person_name}}</span><br>
                     <span><b>เบอร์ติดต่อ:</b> {{$location_contact_person_phone_no}}</span><br>
                 </td>
                 <th></th>
-                <td style="border: 1px solid black; padding: 1px; text-align: left;">
+                <td   style="border: 1px solid black; padding: 1px; text-align: left; width: 250px" >
                     <span><b>วันที่จัดส่ง : </b>{{date('d/m/Y',strtotime($deliverys->date_send))}}</span><br>
                     <span><b>เลขที่บิลหลัก :</b> {{$orders->order_number}}</span><br>
                     <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}}</span><br>
                     <span><b>Billno : </b>{{$pirntCount->print_count}}</span><br>
+                </td>
+                <th></th>
+                <td style="border: 1px solid black; padding: 1px; text-align: center;  width: 20px">
+                    <img src="{{ $qrCodeImage }}" alt="QR Code" style="position: absolute; width: 100px;">
                 </td>
                
             </tr>
@@ -124,9 +129,10 @@
             <td style="width: 10%;font-weight: bold;" align="center">จำนวน</td>
             <td style="width: 10%;font-weight: bold;" align="center">หน่วยนับ</td>
        
-            {{-- <td style="width: 12%;font-weight: bold;" align="center">ราคาต่อหน่วย</td>
-            <td style="width: 20%;font-weight: bold;" align="center">จำนวนเงินไม่รวมภาษี</td> --}}
+           
           </tr>
+          
+
         </thead>
         <tbody>
           @php
@@ -150,6 +156,7 @@
     
              
             </tr>
+           
           @endforeach
       
           {{-- @for ($i = 0; $i < ($diffTotal - 1); $i++)
