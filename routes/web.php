@@ -172,5 +172,5 @@ Route::put('/pocketmoney/update/{CustomerPocketHistory}',[PaymentMethodPocketMon
 Route::group(['middleware' => ['authweb']], function () {
      Route::get('receipt/{id}',[ReceiptController::class,'generateReceipt'])->name('receipt');
      // MPDF_Delivery
-     Route::get('mpdf/delivery/{id}',[MPDF_DeliveryController::class,'generateMPDF'])->name('MPDF.delivery');
+     Route::post('mpdf/delivery/{id}',[MPDF_DeliveryController::class,'generateMPDF'])->name('MPDF.delivery');
 });

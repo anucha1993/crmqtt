@@ -54,6 +54,14 @@
 
 
 <body>
+
+    @if ($request->method_print === 'preview')
+    <div style="width: 120%; float: left; padding: 10px;  position: absolute;  top: 100px; right: -275px">
+        <img src="{{ asset('logo/example.png') }}" alt="">
+    </div>
+    @endif
+
+    
     <div class="header">
         <div style="width: 65%; float: left;">
             <img src="{{ asset('logo/logo.png') }}" alt="HomePro Logo" style="height: 50px; display: block;">

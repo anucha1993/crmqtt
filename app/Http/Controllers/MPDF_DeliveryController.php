@@ -18,17 +18,22 @@ use App\Models\DeliveryLocation;
 use App\Models\OrderDeliveryItems;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentMethodPocketMoney;
+use App\Models\printLogModel;
+use Illuminate\Support\Facades\Auth;
 
 class MPDF_DeliveryController extends Controller
 {
     //
 
-    public function generateMPDF($id)
+    public function generateMPDF(Request $request, $id )
     {
         $payment_method_type_code =  Orders::select('payment_method_type_code')
 				->join('order_delivery','order_delivery.order_id','=','orders.id')
 				->where('order_delivery.order_delivery_id',$id)
 				->first();
+
+       
+
 				
 		$the_amount_of_total_collected_exceeded_the_pocket_money = false;
 
@@ -221,6 +226,28 @@ class MPDF_DeliveryController extends Controller
         #->where('order_delivery.order_delivery_id',$id)->toSql());
 		
 		//die("$sql_pera_1");
+
+          //Print Log
+          if($request->method_print === 'print'){
+            // ตรวจสอบยอดค้างส่ง
+            $data->number_order == $data->item_send;
+            //Check Count Print 
+            $checkCountPrint = Form::where('name', 'delivery')->first();
+  
+            $countNewPrint = $checkCountPrint->update(['print_count',$checkCountPrint+1]);
+            //Create Log
+            printLogModel::create([
+              'print_log_type' => 'delivery',
+              'print_log_delivery_id' => '',
+              'order_delivery_status',
+              'print_log_count' => $countNewPrint->print_count,
+              'created_by' => Auth::user()->id,
+            ]);
+            
+           }
+
+
+
         $datas_chunk = $datas->chunk(10);
         $pirntCount = Form::first();
         $paymentType = DB::table('payment_type')->get();
@@ -266,44 +293,21 @@ class MPDF_DeliveryController extends Controller
     
             // กำหนด Margin
             $mpdf->SetMargins(10, 10, 10, 10);
-    
+
             // สร้าง HTML สำหรับหน้าแรก
-            $htmlPage1 = view('MPDF_Delivery.page-1',compact('qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
-            // $mpdf->SetHTMLFooter('
-            //      <footer>
-            //       <div style="margin-top: 0px; text-align: right;">
-            //       <img src="' . $qrCodeImage . '" alt="QR Code" style="width: 100px; margin-right: -25px;">
-            //       </div>
-            //      </footer>');
+            $htmlPage1 = view('MPDF_Delivery.page-1',compact('request','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
+         
             $mpdf->WriteHTML($htmlPage1);
-    
             // เพิ่มหน้าใหม่
             $mpdf->AddPage();
             $mpdf->WriteHTML($htmlPage1);
-
             $mpdf->AddPage();
             $mpdf->WriteHTML($htmlPage1);
-
             $mpdf->AddPage();
-    
             // สร้าง HTML สำหรับหน้าที่สอง
-            $htmlPage2 = view('MPDF_Delivery.page-2',compact('order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
+            $htmlPage2 = view('MPDF_Delivery.page-2',compact('request','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
             $mpdf->WriteHTML($htmlPage2);
-            //  // เพิ่มหน้าใหม่
-            //  $mpdf->AddPage();
-    
-            //  // สร้าง HTML สำหรับหน้าที่สอง
-            //  $htmlPage3 = view('MPDF.receipt-page-3')->render();
-            //  $mpdf->WriteHTML($htmlPage3);
-    
-            //   // เพิ่มหน้าใหม่
-            // $mpdf->AddPage();
-    
-            // // สร้าง HTML สำหรับหน้าที่สอง
-            // $htmlPage4 = view('MPDF.receipt-page-4')->render();
-            // $mpdf->WriteHTML($htmlPage4);
-    
-            // แสดง PDF
+            $mpdf->SetHTMLHeader('<script type="text/javascript">window.onload = function() { window.print(); }; </script>');
             return $mpdf->Output('document.pdf', 'I');
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

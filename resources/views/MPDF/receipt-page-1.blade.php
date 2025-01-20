@@ -86,7 +86,7 @@
                 <p style="margin: -10px; font-size: 14pt;"><strong>เลขที่:</strong> {{ $order->order_number }}</p>
             </div>
         </div>
-        
+     
         
         
 

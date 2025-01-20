@@ -90,8 +90,8 @@
                 overflow: hidden;
                 padding: 1rem;
                 /* padding-bottom: 1rem;
-                                        padding-top: 1rem;
-                                        padding-bottom: 1rem; */
+                                            padding-top: 1rem;
+                                            padding-bottom: 1rem; */
             }
 
             #tableBilling>thead>tr,
@@ -107,10 +107,10 @@
             }
 
             /* #title_header_delivery {
-                                        background-color: ;
-                                        border: 1px solid ;
-                                        padding: 7px;
-                                    } */
+                                            background-color: ;
+                                            border: 1px solid ;
+                                            padding: 7px;
+                                        } */
         }
     </style>
 @endpush
@@ -131,10 +131,46 @@
                             {{-- <button href="#" class="btn btn-print " onclick="printBilling('tax')" {{(($orders->on_vat != '1') || $orders->status_payment == '0') ? 'disabled' : ''}}  ><i class="fa fa-print" aria-hidden="true"></i> Print ใบกำกับภาษี</button> --}}
                             <button type="button" class="btn btn-print " onclick="printBilling()"><i class="fa fa-print"
                                     aria-hidden="true"></i> Print ใบส่งของ</button>
-                            <a href="{{route('MPDF.delivery',$deliverys->order_delivery_id)}}" class="btn btn-sm btn-danger"><i class="fa fa-print"></i>ใบส่งของ (NEW)</a>
+                            {{-- <a href="{{ route('MPDF.delivery', $deliverys->order_delivery_id) }}"
+                                class="btn btn-sm btn-danger"><i class="fa fa-print"></i>ใบส่งของ (NEW)</a> --}}
 
                         </div>
+
+
                     </div>
+
+                    <button class="btn btn-success" data-toggle="modal" data-target="#printPreviewModal"><i class="fa fa-print"></i> ฟอร์มปริ้นใบส่งของ</button> 
+
+
+                    <div class="modal fade" id="printPreviewModal" tabindex="-1" role="dialog"
+                        aria-labelledby="printPreviewModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    ตัวเลือกการพิมพ์เอกสาร
+                                </div>
+                                <div class="modal-body" >
+                                    <form action="{{ route('MPDF.delivery', $deliverys->order_delivery_id) }}" id="form-print" method="post">
+                                        @method('post')
+                                        @csrf
+                                        <input type="radio" name="method_print" value="preview"><label> แสดงตัวอย่างการพิมพ์</label> &nbsp;
+                                        <input type="radio" name="method_print" value="print" checked><label> ปริ้นเอกสาร</label>
+                                        <br>
+                                         <b class="text-danger">หมายเหตุ : </b>
+                                         <br>
+                                         <b>แสดงตัวอย่างการพิมพ์ :</b> <span>ระบบจะ Stamp ข้อความตัวอย่าง</span>
+                                        <br>
+                                        <b>ปริ้นเอกสาร :</b> <span>ระบบจะทำการบันทึก Log และจำนวนการปริ้นเอกสารนี้</span>
+                                        <br>
+                                        <button type="submit" class="btn btn-sm btn-success" form="form-print"> ยืนยัน</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <hr>
                     <input type="hidden" value="{{ $orders->on_vat }}" id="check_vat">
                     {{ csrf_field() }}
@@ -267,7 +303,8 @@
                                                 {{ number_format($deliverys->money_deposit, 2) }}</p>
                                         @else
                                             <p class="col-sm-6 warning-text text-right" id="cutdeposit"
-                                                style="display: none">{{ number_format($deliverys->money_deposit, 2) }}</p>
+                                                style="display: none">{{ number_format($deliverys->money_deposit, 2) }}
+                                            </p>
                                         @endif
                                         <p class="col-sm-6 warning-text">ยอดที่ต้องชำระ</p>
                                         <p class="col-sm-6 warning-text text-right" id="HavToPayment">
@@ -501,7 +538,6 @@
                                                             <option {{ $deliverys->status == 0 ? 'selected' : '' }}
                                                                 value="0"> กำลังดำเนินการ</option>
                                                             <option {{ $deliverys->status == 1 ? 'selected' : '' }}
-                                                         
                                                                 value="1"> จัดส่งสำเร็จ</option>
                                                             <option {{ $deliverys->status == 2 ? 'selected' : '' }}
                                                                 value="2"> ยกเลิก</option>
@@ -529,7 +565,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         {{-- <div class="form-inline">
                                             <div class="col-sm-6">
                                                 <div class="form-inline">
@@ -620,11 +656,13 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">แจ้งชำระเงิน &nbsp; <span id="pocket-grand"></span> <span
-                                class="pull-right text-success" id="total-calculate"></span>
+                        <h5 class="modal-title" id="exampleModalLongTitle">แจ้งชำระเงิน &nbsp; <span
+                                id="pocket-grand"></span> <span class="pull-right text-success"
+                                id="total-calculate"></span>
                         </h5>
                         <input type="hidden" id="order-total" value="{{ $orders->total - $orders->GetDepositSum() }}">
-                        <input type="hidden" id="proket-total" value="{{ $orders->customer_type == 'customer' ? (!empty($customer->PocketMoney) ? $customer->PocketMoney->pocket_money : '0.00') : '0.00' }}">
+                        <input type="hidden" id="proket-total"
+                            value="{{ $orders->customer_type == 'customer' ? (!empty($customer->PocketMoney) ? $customer->PocketMoney->pocket_money : '0.00') : '0.00' }}">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -638,7 +676,7 @@
                             <input type="hidden" name="order_id" value="{{ $orders->id }}">
                             <input type="hidden" name="order_number" value="{{ $orders->order_number }}">
                             <input type="hidden" name="order_delivery_id" value="{{ $deliverys->order_delivery_id }}">
-                            
+
                             <label for="">ประเภทการชำระเงิน <span class="text-danger"> *</span></label>
 
 
@@ -676,7 +714,7 @@
         </div>
 
 
-        
+
 
 
         <script>
@@ -975,43 +1013,41 @@
 
         // Pocket Money
         <script>
-    $(document).ready(function() {
-        // จับ event change ของ #payment-type และ .payment-total
-        $('#payment-type, .payment-total').on('change keyup', function() {
-            var pocket = $('#payment-type').find(':selected').data('pocket-money'); // ดึงค่าจาก option ที่เลือก
-            var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
-            var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
+            $(document).ready(function() {
+                // จับ event change ของ #payment-type และ .payment-total
+                $('#payment-type, .payment-total').on('change keyup', function() {
+                    var pocket = $('#payment-type').find(':selected').data(
+                    'pocket-money'); // ดึงค่าจาก option ที่เลือก
+                    var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
+                    var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
 
-            if (pocket === 'Y') {
-                var remaining = pocketTotal - total;
-                if (remaining < 0) {
-                    // ยอดในกระเป๋าไม่พอ
-                    alert('ยอดเงินในกระเป๋าไม่เพียงพอ');
-                    // เซ็ต total ให้เท่ากับ pocketTotal
-                    $('.payment-total').val(pocketTotal.toFixed(2));
-                    $('#pocket-grand').text('0.00'); // ยอดคงเหลือเป็น 0
-                } else {
-                    $('#pocket-grand').text(remaining.toFixed(2)); // แสดงยอดคงเหลือ
-                }
-            }
-        });
+                    if (pocket === 'Y') {
+                        var remaining = pocketTotal - total;
+                        if (remaining < 0) {
+                            // ยอดในกระเป๋าไม่พอ
+                            alert('ยอดเงินในกระเป๋าไม่เพียงพอ');
+                            // เซ็ต total ให้เท่ากับ pocketTotal
+                            $('.payment-total').val(pocketTotal.toFixed(2));
+                            $('#pocket-grand').text('0.00'); // ยอดคงเหลือเป็น 0
+                        } else {
+                            $('#pocket-grand').text(remaining.toFixed(2)); // แสดงยอดคงเหลือ
+                        }
+                    }
+                });
 
-        // ตรวจสอบก่อน submit
-        // $('#paymnet-store').on('submit', function(e) {
-        //     var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
-        //     var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
+                // ตรวจสอบก่อน submit
+                // $('#paymnet-store').on('submit', function(e) {
+                //     var pocketTotal = parseFloat($('#proket-total').val()); // ค่าจากกระเป๋าเงิน
+                //     var total = parseFloat($('.payment-total').val()); // ยอดเงินที่ต้องชำระ
 
-        //     if (total > pocketTotal) {
-        //         // ถ้ายอดชำระมากกว่ายอดกระเป๋าเงิน ให้ป้องกันการ submit form
-        //         alert('ยอดชำระมากกว่ายอดในกระเป๋าเงิน');
-        //         e.preventDefault(); // ยกเลิกการ submit
-        //     }
-        // });
-    });
-</script>
-
-
-
+                //     if (total > pocketTotal) {
+                //         // ถ้ายอดชำระมากกว่ายอดกระเป๋าเงิน ให้ป้องกันการ submit form
+                //         alert('ยอดชำระมากกว่ายอดในกระเป๋าเงิน');
+                //         e.preventDefault(); // ยกเลิกการ submit
+                //     }
+                // });
+            });
+        </script>
     @endpush
 
 

@@ -50,34 +50,30 @@
         }
        
     </style>
+    
 </head>
 
 
 <body>
+ 
+
+
+    @if ($request->method_print === 'preview')
+    <div style="width: 120%; float: left; padding: 10px;  position: absolute;  top: 100px; right: -275px">
+        <img src="{{ asset('logo/example.png') }}" alt="">
+    </div>
+    @endif
+
     <div class="header">
         <div style="width: 65%; float: left;">
-            <h1>ใ<b>บส่งสินค้า/delivery</b></h1>
-            {{-- <img src="{{ asset('logo/logo.png') }}" alt="HomePro Logo" style="height: 50px; display: block;">
-            <p style="margin: 0; font-size: 14pt;"><b>Call ติดต่อ สอบถาม 082-4789197</b></p>
-            <p style="margin: 0; font-size: 14pt;">บริษัท เจริญมั่น คอนกรีต จำกัด (สำนักงานใหญ่)</p>
-            <p style="margin: 0; font-size: 14pt;">ที่อยู่ 99/35 หมู่ที่ 9 ตำบลละหาร อำเภอบางบัวทอง จังหวัดนนทบุรี 11110
-            </p>
-            <p style="margin: 0; font-size: 14pt;">เลขประจำตัวผู้เสียภาษีอากร: 0125560015546</p> --}}
+            <h1><b>ใบส่งสินค้า/delivery</b></h1>
         </div>
-
-       
         <div style="text-align: right; padding: 0; margin: 0; width: 35%;">
             <!-- ข้อความแสดงจำนวนหน้า -->
             <p style="margin: 0; padding-right: -60px; font-size: 12pt;">
                 <strong>หน้า/ที่:</strong> {PAGENO}/{nbpg}
             </p>
-        
-            <!-- ข้อความแสดงวันที่ -->
-            {{-- <p style="margin: 0; padding: 0; font-size: 12pt;">
-                <strong>วันที่:</strong> 
-            </p> --}}
-        
-            <!-- ข้อความแสดงน้ำหนักรวม -->
+    
             <p style="margin: 0; padding: 0; font-size: 12pt;">
                 <strong>น้ำหนักรวม:</strong> {{$datas_sub_total_delivery}} Kgs.
             </p>
@@ -89,13 +85,7 @@
 
         <div style="clear: both;"></div>
     </div>
- <!-- ส่วนของ QR Code -->
 
-
-
-    {{-- <div class="invoice-title">
-        ใบเสร็จรับเงิน (ฉบับสำเนา 1)
-    </div> --}}
     <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14pt;">
         <thead>
             <tr>
@@ -270,8 +260,7 @@
 
     </table>
 
-
-
+    
 </body>
 
 </html>
