@@ -64,22 +64,34 @@
     
     <div class="header">
         <div style="width: 65%; float: left;">
-            {{-- {{$data->item_send}} --}}
-            <h1><b>ใบส่งสินค้า/delivery</b></h1>
+            <img src="{{ asset('logo/logo.png') }}" alt="HomePro Logo" style="height: 50px; display: block;">
+            <p style="margin: 0; font-size: 14pt;"><b>Call ติดต่อ สอบถาม 082-4789197</b></p>
+            <p style="margin: 0; font-size: 14pt;">บริษัท เจริญมั่น คอนกรีต จำกัด (สำนักงานใหญ่)</p>
+            <p style="margin: 0; font-size: 14pt;">ที่อยู่ 99/35 หมู่ที่ 9 ตำบลละหาร อำเภอบางบัวทอง จังหวัดนนทบุรี 11110
+            </p>
+            <p style="margin: 0; font-size: 14pt;">เลขประจำตัวผู้เสียภาษีอากร: 0125560015546</p>
         </div>
+
+       
         <div style="text-align: right; padding: 0; margin: 0; width: 35%;">
             <!-- ข้อความแสดงจำนวนหน้า -->
             <p style="margin: 0; padding-right: -60px; font-size: 12pt;">
                 <strong>หน้า/ที่:</strong> {PAGENO}/{nbpg}
             </p>
-    
+        
+            <!-- ข้อความแสดงวันที่ -->
+            {{-- <p style="margin: 0; padding: 0; font-size: 12pt;">
+                <strong>วันที่:</strong> 
+            </p> --}}
+        
+            <!-- ข้อความแสดงน้ำหนักรวม -->
             <p style="margin: 0; padding: 0; font-size: 12pt;">
                 <strong>น้ำหนักรวม:</strong> {{$datas_sub_total_delivery}} Kgs.
             </p>
         
-           
+            <!-- ส่วนของ QR Code -->
+            
         </div>
-
         
 
         <div style="clear: both;"></div>
@@ -101,8 +113,8 @@
                 <td   style="border: 1px solid black; padding: 1px; text-align: left; width: 200px" >
                     <span><b>วันที่จัดส่ง : </b>{{date('d/m/Y',strtotime($deliverys->date_send))}}</span><br>
                     <span><b>เลขที่บิลหลัก :</b> {{$orders->order_number}}</span><br>
-                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}} {{$statusDeliver}}</span><br>
-                    <span><b>Billno : </b>{{$pirntCount->print_count}} </span><br>
+                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}}</span><br>
+                    <span><b>Billno : </b>{{$pirntCount->print_count}}</span><br>
                 </td>
                 <td></td>
                 <td style="border: 1px solid black; padding: 1px; text-align: center;  width: 20px">
@@ -146,8 +158,8 @@
                 <td align="center">{{$data->item_send_qty}}</td>
                 <td align="center">{{countunitstr($data->count_unit)}}</td>
                 <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
-                <td align="center">{{$request->price1 ? number_format($data->price_item,2) : '-'}}</td>
-                <td align="right">{{$request->price1 ? number_format($data->total_item_all,2) : '-'}}</td>
+                <td align="center">{{number_format($data->price_item,2)}}</td>
+                <td align="right">{{number_format($data->total_item_all,2)}}</td>
             </tr>
             @endforeach
            
@@ -155,52 +167,27 @@
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
-                 @if ($request->price1)
-                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
-                 @else
-                 <td align="right" style="border:1px solid black;">-</td>
-                 @endif
-                
+                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
             </tr>
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ส่วนลด:</strong></td>
-                @if ($request->price1)
                 <td align="right" style="border:1px solid black;">{{ number_format($order->discount, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-                
             </tr>
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนหลังหักส่วนลด:</strong></td>
-                @if ($request->price1)
                 <td align="right" style="border:1px solid black;">{{ number_format($order->price_all - $order->discount, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-              
             </tr>
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ภาษีมูลค่าเพิ่ม:</strong></td>
-                @if ($request->price1)
                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-               
             </tr>
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
-                @if ($request->price1)
                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-               
             </tr>
 
         </tbody>

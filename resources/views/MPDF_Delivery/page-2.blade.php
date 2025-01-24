@@ -64,39 +64,25 @@
     
     <div class="header">
         <div style="width: 65%; float: left;">
-            <img src="{{ asset('logo/logo.png') }}" alt="HomePro Logo" style="height: 50px; display: block;">
-            <p style="margin: 0; font-size: 14pt;"><b>Call ติดต่อ สอบถาม 082-4789197</b></p>
-            <p style="margin: 0; font-size: 14pt;">บริษัท เจริญมั่น คอนกรีต จำกัด (สำนักงานใหญ่)</p>
-            <p style="margin: 0; font-size: 14pt;">ที่อยู่ 99/35 หมู่ที่ 9 ตำบลละหาร อำเภอบางบัวทอง จังหวัดนนทบุรี 11110
-            </p>
-            <p style="margin: 0; font-size: 14pt;">เลขประจำตัวผู้เสียภาษีอากร: 0125560015546</p>
+            <h1><b>ใบส่งสินค้า/delivery</b></h1>
         </div>
-
-       
         <div style="text-align: right; padding: 0; margin: 0; width: 35%;">
             <!-- ข้อความแสดงจำนวนหน้า -->
             <p style="margin: 0; padding-right: -60px; font-size: 12pt;">
                 <strong>หน้า/ที่:</strong> {PAGENO}/{nbpg}
             </p>
-        
-            <!-- ข้อความแสดงวันที่ -->
-            {{-- <p style="margin: 0; padding: 0; font-size: 12pt;">
-                <strong>วันที่:</strong> 
-            </p> --}}
-        
-            <!-- ข้อความแสดงน้ำหนักรวม -->
+    
             <p style="margin: 0; padding: 0; font-size: 12pt;">
                 <strong>น้ำหนักรวม:</strong> {{$datas_sub_total_delivery}} Kgs.
             </p>
         
-            <!-- ส่วนของ QR Code -->
-            
+           
         </div>
+
         
 
         <div style="clear: both;"></div>
     </div>
-
     {{-- <div class="invoice-title">
         ใบเสร็จรับเงิน (ฉบับสำเนา 1)
     </div> --}}
@@ -126,101 +112,100 @@
     </table>
 
     @foreach ($datas_chunk as $datas_chuck_item)
-    <table style="font-size: 16px;width: 100%; border:1px solid black;" id="tableBilling">
+      <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 16px;">
         <thead>
-          <tr style="color:white; print-color-adjust: exact; background:#b9b9b90a;">
-            <td style="width: 10%; font-weight: bold;padding:5px" align="center">ลำดับ</td>
-            <td style="font-weight: bold;">รายการสินค้า</td>
-            <td style="width: 10%;font-weight: bold;" align="center">จำนวน</td>
-            <td style="width: 10%;font-weight: bold;" align="center">หน่วยนับ</td>
-    
-            <td style="width: 12%;font-weight: bold;" align="center">ราคาต่อหน่วย</td>
-            <td style="width: 20%;font-weight: bold;" align="center">จำนวนเงิน</td>
-          </tr>
-        </thead>
-        <tbody>
-          @php
-              $j=0;
-              $total = 0;
-              $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
-          @endphp
-          @foreach ($datas_chuck_item as $data)
-           
-          <?php
-              $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
-              if ($test_pera == 0) { continue;}
-
-              $total += $data->total_item_all;
-          ?>
-          <tr>
-              <td align="center" class="text-center">{{++$j}}</td>
-              <td > <span style="padding-left:1rem">
-                {{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</span>
-               </td>
-           
-              <td align="center" class="text-right">{{$data->item_send_qty}}</td>
-              <td align="center"  class="text-center">{{countunitstr($data->count_unit)}}</td>
-              <td align="center"  class="text-right">{{number_format($data->price_item,2)}}</td>
-              <td align="right"  class="text-right">{{number_format($data->total_item_all,2)}}</td>
-
-            
-             
+            <tr style="background:#b9b9b90a; border:1px solid">
+                <th style="width: 10%; border:1px solid white;">ลำดับ</th>
+                <th style="width: 10%; border:1px solid white;">จำนวน</th>
+                <th style="width: 10%; border:1px solid white;">หน่วยนับ</th>
+                <th style="width: 30%; border:1px solid white;">รายการสินค้า</th>
+                <th style="width: 10%; border:1px solid white;">ราคาต่อหน่วย</th>
+                <th style="width: 10%; border:1px solid white;">จำนวน</th>
             </tr>
-          @endforeach
-      
+        </thead>
+
+        <tbody>
+            @php
+            $j=0;
+            $total = 0;
+            $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
+        @endphp
+        @foreach ($datas_chuck_item as $data)
+         
+        <?php
+            $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
+            if ($test_pera == 0) { continue;}
+
+            $total += $data->total_item_all;
+        ?>
+            
+            <tr>
+                <td align="center">{{++$j}}</td>
+                <td align="center">{{$data->item_send_qty}}</td>
+                <td align="center">{{countunitstr($data->count_unit)}}</td>
+                <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
+                <td align="center">{{$request->price2 ? number_format($data->price_item,2) : '-'}}</td>
+                <td align="right">{{$request->price2 ? number_format($data->total_item_all,2) : '-'}}</td>
+            </tr>
+            @endforeach
+
+            <tr>
+                <td colspan="4"></td>
+                <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
+                 @if ($request->price2)
+                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
+                 @else
+                 <td align="right" style="border:1px solid black;">-</td>
+                 @endif
+            </tr>
+
+            <tr>
+                <td colspan="4"></td>
+                <td style="border:1px solid black; text-align: right;"><strong>ส่วนลด:</strong></td>
+                @if ($request->price2)
+                <td align="right" style="border:1px solid black;">{{ number_format($order->discount, 2) }}</td>
+                @else
+                <td align="right" style="border:1px solid black;">-</td>
+                @endif
+                
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td style="border:1px solid black; text-align: right;"><strong>จำนวนหลังหักส่วนลด:</strong></td>
+                @if ($request->price2)
+                <td align="right" style="border:1px solid black;">{{ number_format($order->price_all - $order->discount, 2) }}</td>
+                @else
+                <td align="right" style="border:1px solid black;">-</td>
+                @endif
+              
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td style="border:1px solid black; text-align: right;"><strong>ภาษีมูลค่าเพิ่ม:</strong></td>
+                @if ($request->price2)
+                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</td>
+                @else
+                <td align="right" style="border:1px solid black;">-</td>
+                @endif
+               
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+                <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
+                @if ($request->price2)
+                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
+                @else
+                <td align="right" style="border:1px solid black;">-</td>
+                @endif
+               
+            </tr>
+
         </tbody>
        
-       <tfoot>
-       <tr>
-        <td colspan="5" style="width: 25%; vertical-align: top; text-align: right;font-weight: bold;">
-            <p><strong>ราคาก่อนภาษี: </strong> </p>
-            <p><strong>ส่วนลด:</strong></p>
-            <p><strong>จำนวนหลังหักส่วนลด:</strong></p>
-            <p><strong>ภาษีมูลค่าเพิ่ม:</strong></p>
-            <p><strong>จำนวนเงินทั้งสิน:</strong></p>
-        </td>
+        </table>
 
-        <td style="width: 15%; vertical-align: top; text-align: right; font-weight: bold;">
-            <p>{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }} </p>
-            <p>{{ number_format($order->discount, 2) }}</p>
-            <p>{{ number_format($order->price_all - $order->discount, 2) }}</p>
-            <p>{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</p>
-            <p>{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</p>
-
-        </td>
-       </tr>
+        @endforeach
         
-          {{--  <tr style="border-top: 1px solid;">
-            <td colspan="4"></td>
-            <td align="right" class="text-right" style="font-weight: bold; border: 1px solid;">มูลค่าสินค้าก่อนภาษีมูลค่าเพิ่ม:</td>
-            <td align="right" style="font-weight: bold;" class="total_all_bill" style="border: 1px solid;"><b>{{number_format($total,2)}}</b></td>
-          </tr>
-          <tr style="border-top: 1px solid;">
-            <td colspan="4"></td>
-            <td align="right" class="text-right" style="font-weight: bold; border: 1px solid;">ส่วนลด : </td>
-            <td align="right" style="font-weight: bold;" class="total_all_bill" style="border: 1px solid;"><b>{{number_format($total,2)}}</b></td>
-          </tr>
-          <tr style="border-top: 1px solid;">
-            <td colspan="4"></td>
-            <td align="right" class="text-right" style="font-weight: bold; border: 1px solid;">จำนวนหลังหักส่วนลด:</td>
-            <td align="right" style="font-weight: bold;" class="total_all_bill" style="border: 1px solid;"><b>{{number_format($total,2)}}</b></td>
-          </tr>
-          <tr style="border-top: 1px solid;">
-            <td colspan="4"></td>
-            <td align="right" class="text-right" style="font-weight: bold; border: 1px solid;">ภาษีมูลค่าเพิ่ม:</td>
-            <td align="right" style="font-weight: bold;" class="total_all_bill" style="border: 1px solid;"><b>{{number_format($total,2)}}</b></td>
-          </tr>
-          <tr style="border-top: 1px solid;">
-            <td colspan="3"></td>
-            <td colspan="2" align="right" class="text-right" style="font-weight: bold; border: 1px solid;">มูลค่ารวม::</td>
-            <td align="right" style="font-weight: bold;" class="total_all_bill" style="border: 1px solid;"><b>{{number_format($total,2)}}</b></td>
-          </tr> --}}
-        </tfoot> 
-    
-      </table>
-
-      @endforeach
-
 
 
 

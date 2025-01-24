@@ -129,19 +129,68 @@
                         <div class="text-right col-sm-6">
                             <a href="#"data-toggle="modal" data-target="#exampleModalCenter">แจ้งชำระเงิน</a> &nbsp;
                             {{-- <button href="#" class="btn btn-print " onclick="printBilling('tax')" {{(($orders->on_vat != '1') || $orders->status_payment == '0') ? 'disabled' : ''}}  ><i class="fa fa-print" aria-hidden="true"></i> Print ใบกำกับภาษี</button> --}}
-                            <button type="button" class="btn btn-print " onclick="printBilling()"><i class="fa fa-print"
-                                    aria-hidden="true"></i> Print ใบส่งของ</button>
+                            
+                            
+                            {{-- <button type="button" class="btn btn-print " onclick="printBilling()"><i class="fa fa-print"
+                                    aria-hidden="true"></i> Print ใบส่งของ</button> --}}
                             {{-- <a href="{{ route('MPDF.delivery', $deliverys->order_delivery_id) }}"
                                 class="btn btn-sm btn-danger"><i class="fa fa-print"></i>ใบส่งของ (NEW)</a> --}}
+
+                          <button class="btn btn-success" data-toggle="modal" data-target="#printPreviewModal"><i class="fa fa-print"></i> ฟอร์มปริ้นใบส่งของ</button> 
+                          <a href="#"  data-toggle="modal" data-target="#logPirnt"> ประวัติการปริ้น</a>
 
                         </div>
 
 
                     </div>
+                     {{-- Log Print --}}
+                     <div class="modal fade" id="logPirnt" tabindex="-1" role="dialog"
+                     aria-labelledby="printPreviewModalTitle" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 ประวัติการปริ้น
+                             </div>
+                             <div class="modal-body" >
+                                
+                                   <table class="table table">
+                                    <thead>
+                                        <tr>
+                                            <th>ปริ้นครั้งที่</th>
+                                            <th>เลขที่บิลย่อย</th>
+                                            <th>สถานะ</th>
+                                            <th>วันที่ปริ้น</th>
+                                            <th>ผู้ปริ้น</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($printLogs as $log)
+                                        <tr>
+                                            <td>{{$log->print_log_count}}</td>
+                                            <td>{{$log->Delivery->order_delivery_number}}</td>
+                                            <td>{{$log->order_delivery_status}}</td>
+                                            <td>{{date('d/m/Y H:m:s',strtotime($log->created_at))}}</td>
+                                            <td>{{$log->User->name}}</td>
+                                        </tr>
+                                        @empty
+                                     
+                                        @endforelse
+                                    </tbody>
 
-                    <button class="btn btn-success" data-toggle="modal" data-target="#printPreviewModal"><i class="fa fa-print"></i> ฟอร์มปริ้นใบส่งของ</button> 
+                                   </table>
+                                   {{-- @forelse ($printLogs as $log)
+                                     <li style="font-size: 12px">({{$log->print_log_count}}) เลขที่บิลย่อย : {{$log->Delivery->order_delivery_number}} สถานะ : {{$log->order_delivery_status}} วันที่ : {{date('d/m/Y H:m:s',strtotime($log->created_at))}} ผู้ปริ้น : {{$log->User->name}}</li>
+                                 @empty
+                                     
+                                 @endforelse --}}
+                                 
+                             </div>
+                         </div>
+                     </div>
+                 </div>
 
 
+                     {{-- Modal Print --}}
                     <div class="modal fade" id="printPreviewModal" tabindex="-1" role="dialog"
                         aria-labelledby="printPreviewModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -155,6 +204,13 @@
                                         @csrf
                                         <input type="radio" name="method_print" value="preview"><label> แสดงตัวอย่างการพิมพ์</label> &nbsp;
                                         <input type="radio" name="method_print" value="print" checked><label> ปริ้นเอกสาร</label>
+                                        <br>
+                                        <hr>
+                                         <span>ตัวเลือกการแสดง</span><br>
+
+                                         <input type="checkbox" name="price1" value="price1"><label> &nbsp;แสดงราคาหน้า 1 </label> <br>
+                                         <input type="checkbox" name="price2" value="price2"><label> &nbsp;แสดงราคาหน้า 2 </label> &nbsp;<br>
+                                         <input type="checkbox" name="price3" value="price3"><label> &nbsp;แสดงราคาหน้า 3 </label> &nbsp;<br>
                                         <br>
                                          <b class="text-danger">หมายเหตุ : </b>
                                          <br>

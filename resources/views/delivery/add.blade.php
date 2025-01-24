@@ -119,7 +119,7 @@
                                 <td>{{$data->note}}</td>
                                 <td class="p-send">{{$data->number_order-$data->item_send}}</td>
                                 <td>
-                                    <input type="text" name="items_send[{{$data->id}}]" class="form-control form-control-sm items_send_{{$data->id}}" onblur="UpdateItmes({{$data->id}})"  {{$data->number_order == $data->item_send ? 'disabled' : ''}} value="{{$data->number_order-$data->item_send}}{{--$data->number_order--}}{{--$data->item_send--}}" max="{{$data->number_order-$data->item_send}}" min="0" data-max="{{$data->number_order-$data->item_send}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                    <input type="text" name="items_send[{{$data->id}}]" class="form-control form-control-sm items_send_{{$data->id}}" onblur="UpdateItmes({{$data->id}})"  value="{{$data->number_order-$data->item_send}}{{--$data->number_order--}}{{--$data->item_send--}}" max="{{$data->number_order-$data->item_send}}" min="0" data-max="{{$data->number_order-$data->item_send}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                 </td>
                             </tr>
                         @endforeach

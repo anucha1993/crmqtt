@@ -21,7 +21,7 @@ use App\Models\PaymentHistory;
 use App\Models\CustomerPocketHistory;
 use App\Models\DeliveryLocation;
 use App\Models\PaymentMethodPocketMoney;
-
+use App\Models\printLogModel;
 
 class DeliveryController extends Controller
 {
@@ -447,9 +447,9 @@ class DeliveryController extends Controller
         ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
         ->where('order_delivery.order_delivery_id',$id)->first();
 		
-		$deliverys = OrderDelivery::select('order_delivery.*')
-        #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
-        ->where('order_delivery.order_delivery_id',$id)->first();
+		// $deliverys = OrderDelivery::select('order_delivery.*')
+        // #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
+        // ->where('order_delivery.order_delivery_id',$id)->first();
 		
 		#die(OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
         #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
@@ -467,8 +467,9 @@ class DeliveryController extends Controller
 				->join('orders','orders.quotation_id','=','quotation.id')
 				->where('orders.id',$deliverys->order_id)
 				->first();
-				
-        return view('delivery.view',compact('paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'));
+
+                $printLogs = printLogModel::where('print_log_order_id',$deliverys->order_id)->get();
+        return view('delivery.view',compact('printLogs','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'));
     }
 
     public function update(Request $request)

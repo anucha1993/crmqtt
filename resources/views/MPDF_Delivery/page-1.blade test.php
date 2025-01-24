@@ -48,12 +48,15 @@
         .footer p {
             margin: 15px 0;
         }
-        
+       
     </style>
+    
 </head>
 
 
 <body>
+ 
+
 
     @if ($request->method_print === 'preview')
     <div style="width: 120%; float: left; padding: 10px;  position: absolute;  top: 100px; right: -275px">
@@ -61,10 +64,8 @@
     </div>
     @endif
 
-    
     <div class="header">
         <div style="width: 65%; float: left;">
-            {{-- {{$data->item_send}} --}}
             <h1><b>ใบส่งสินค้า/delivery</b></h1>
         </div>
         <div style="text-align: right; padding: 0; margin: 0; width: 35%;">
@@ -85,26 +86,23 @@
         <div style="clear: both;"></div>
     </div>
 
-    {{-- <div class="invoice-title">
-        ใบเสร็จรับเงิน (ฉบับสำเนา 1)
-    </div> --}}
     <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14pt;">
         <thead>
             <tr>
-                <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 400px">
+                <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 350px">
                     <span><b>ชื่อลูกค้า :</b> {{$customer->store_name}}</span><br>
                     <span><b>ที่อยู่จัดส่ง :</b> {{$location_name}}</span><br>
                     <span><b>ชื่อผู้ติดต่อ:</b> {{$location_contact_person_name}}</span><br>
                     <span><b>เบอร์ติดต่อ:</b> {{$location_contact_person_phone_no}}</span><br>
                 </td>
                 <th></th>
-                <td   style="border: 1px solid black; padding: 1px; text-align: left; width: 200px" >
+                <td   style="border: 1px solid black; padding: 1px; text-align: left; width: 250px" >
                     <span><b>วันที่จัดส่ง : </b>{{date('d/m/Y',strtotime($deliverys->date_send))}}</span><br>
                     <span><b>เลขที่บิลหลัก :</b> {{$orders->order_number}}</span><br>
-                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}} {{$statusDeliver}}</span><br>
-                    <span><b>Billno : </b>{{$pirntCount->print_count}} </span><br>
+                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}}</span><br>
+                    <span><b>Billno : </b>{{$pirntCount->print_count}}</span><br>
                 </td>
-                <td></td>
+                <th></th>
                 <td style="border: 1px solid black; padding: 1px; text-align: center;  width: 20px">
                     <img src="{{ $qrCodeImage }}" alt="QR Code" style="position: absolute; width: 100px;">
                 </td>
@@ -114,102 +112,66 @@
     </table>
 
     @foreach ($datas_chunk as $datas_chuck_item)
-      <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 16px;">
+    <table style="font-size: 16px;width: 100%; border:1px solid black;" id="tableBilling">
         <thead>
-            <tr style="background:#b9b9b90a; border:1px solid">
-                <th style="width: 10%; border:1px solid white;">ลำดับ</th>
-                <th style="width: 10%; border:1px solid white;">จำนวน</th>
-                <th style="width: 10%; border:1px solid white;">หน่วยนับ</th>
-                <th style="width: 30%; border:1px solid white;">รายการสินค้า</th>
-                <th style="width: 10%; border:1px solid white;">ราคาต่อหน่วย</th>
-                <th style="width: 10%; border:1px solid white;">จำนวน</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @php
-            $j=0;
-            $total = 0;
-            $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
-        @endphp
-        @foreach ($datas_chuck_item as $data)
-         
-        <?php
-            $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
-            if ($test_pera == 0) { continue;}
-
-            $total += $data->total_item_all;
-        ?>
-            
-            <tr>
-                <td align="center">{{++$j}}</td>
-                <td align="center">{{$data->item_send_qty}}</td>
-                <td align="center">{{countunitstr($data->count_unit)}}</td>
-                <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
-                <td align="center">{{$request->price1 ? number_format($data->price_item,2) : '-'}}</td>
-                <td align="right">{{$request->price1 ? number_format($data->total_item_all,2) : '-'}}</td>
-            </tr>
-            @endforeach
-           
-         
-            <tr>
-                <td colspan="4"></td>
-                <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
-                 @if ($request->price1)
-                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
-                 @else
-                 <td align="right" style="border:1px solid black;">-</td>
-                 @endif
-                
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-                <td style="border:1px solid black; text-align: right;"><strong>ส่วนลด:</strong></td>
-                @if ($request->price1)
-                <td align="right" style="border:1px solid black;">{{ number_format($order->discount, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-                
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-                <td style="border:1px solid black; text-align: right;"><strong>จำนวนหลังหักส่วนลด:</strong></td>
-                @if ($request->price1)
-                <td align="right" style="border:1px solid black;">{{ number_format($order->price_all - $order->discount, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-              
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-                <td style="border:1px solid black; text-align: right;"><strong>ภาษีมูลค่าเพิ่ม:</strong></td>
-                @if ($request->price1)
-                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-               
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-                <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
-                @if ($request->price1)
-                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
-                @else
-                <td align="right" style="border:1px solid black;">-</td>
-                @endif
-               
-            </tr>
-
-        </tbody>
+          <tr style="color:white; print-color-adjust: exact; background:#b9b9b90a;">
+            <td style="width: 10%; font-weight: bold;padding:5px" align="center">ลำดับ</td>
+            <td style="font-weight: bold;">รายการสินค้า</td>
+            <td style="width: 10%;font-weight: bold;" align="center">จำนวน</td>
+            <td style="width: 10%;font-weight: bold;" align="center">หน่วยนับ</td>
        
-        </table>
+           
+          </tr>
+          
 
-        @endforeach
-        
+        </thead>
+        <tbody>
+          @php
+              $j=0;
+              $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
+          @endphp
+          @foreach ($datas_chuck_item as $data)
+          <?php
+              $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
+              if ($test_pera == 0) { continue;}
+          ?>
+          <tr>
+              <td align="center" style="font-weight: bold;" class="text-center">{{++$j}}</td>
+              <td style="font-weight: bold;"> <span style="padding-left:1rem">
+                {{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</span>
+               </td>
+           
+              <td align="center" style="font-weight: bold;" class="text-right">{{$data->item_send_qty}}</td>
+              <td align="center" style="font-weight: bold;" class="text-center">{{countunitstr($data->count_unit)}}</td>
+              
+    
+             
+            </tr>
+           
+          @endforeach
+      
+          {{-- @for ($i = 0; $i < ($diffTotal - 1); $i++)
+          <tr>
+            <td class="text-center"><br></td>
+            <td class="text-right"><br></td>
+            <td class="text-center"><br></td>
+            <td><span style="padding-left:1rem"><br></span> <span style="float: right;padding-right:1rem"></span></td>
+            <td class="text-right"><br></td>
+            <td class="text-right"><br></td>
+          </tr>
+          @endfor --}}
+        </tbody>
+        {{-- <tfoot>
+          <tr style="border-top: 1px solid;">
+            <td colspan="4"></td>
+            <td class="text-right" style="font-weight: bold; border: 1px solid;">รวมเงิน</td>
+            <td style="font-weight: bold;" class="text-right total_all_bill" style="border: 1px solid;"></td>
+          </tr>
+        </tfoot> --}}
+    
+      </table>
 
+      @endforeach
 
 
 
@@ -298,9 +260,7 @@
 
     </table>
 
-
-
+    
 </body>
-
 
 </html>

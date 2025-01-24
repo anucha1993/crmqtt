@@ -216,35 +216,34 @@ class MPDF_DeliveryController extends Controller
         $deliverys = OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
         ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
         ->where('order_delivery.order_delivery_id',$id)->first();
-		
-		$deliverys = OrderDelivery::select('order_delivery.*')
-        #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
-        ->where('order_delivery.order_delivery_id',$id)->first();
-		
-		#die(OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
-        #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
-        #->where('order_delivery.order_delivery_id',$id)->toSql());
-		
-		//die("$sql_pera_1");
+		$checkStock = $data->item_number_order - $data->item_send;
+        $statusDeliver = $checkStock <= 0 ? '- ส่งครบ' : '';
 
-          //Print Log
-          if($request->method_print === 'print'){
-            // ตรวจสอบยอดค้างส่ง
-            $data->number_order == $data->item_send;
-            //Check Count Print 
-            $checkCountPrint = Form::where('name', 'delivery')->first();
-  
-            $countNewPrint = $checkCountPrint->update(['print_count',$checkCountPrint+1]);
-            //Create Log
-            printLogModel::create([
-              'print_log_type' => 'delivery',
-              'print_log_delivery_id' => '',
-              'order_delivery_status',
-              'print_log_count' => $countNewPrint->print_count,
-              'created_by' => Auth::user()->id,
-            ]);
+       
+        if($request->method_print === 'print'){
             
-           }
+            // ทำการพิมพ์และบันทึกข้อมูล
+            $status = $datas_for_order_id->item_number_order == $data->item_send ? 'ส่งครบ' : '-';
+           
+            $checkCountPrint = Form::where('name', 'delivery')->first();
+            $countNew = $checkCountPrint->print_count + 1;
+            $checkCountPrint->update(['print_count' => $countNew]);
+    
+            printLogModel::create([
+                'print_log_type' => 'delivery',
+                'print_log_delivery_id' => $deliverys->order_delivery_id,
+                'print_log_order_id' => $deliverys->order_id,
+                'order_delivery_status' => $status,
+                'print_log_count' => $countNew,
+                'created_by' => Auth::user()->id,
+            ]);
+    
+            // ตั้งค่า session ว่าพิมพ์ไปแล้ว
+            session(['printed' => true]);
+            $request->merge(['method_print' => NULL]); 
+    
+         
+        }
 
 
 
@@ -295,18 +294,18 @@ class MPDF_DeliveryController extends Controller
             $mpdf->SetMargins(10, 10, 10, 10);
 
             // สร้าง HTML สำหรับหน้าแรก
-            $htmlPage1 = view('MPDF_Delivery.page-1',compact('request','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
-         
-            $mpdf->WriteHTML($htmlPage1);
-            // เพิ่มหน้าใหม่
-            $mpdf->AddPage();
-            $mpdf->WriteHTML($htmlPage1);
-            $mpdf->AddPage();
+        
+            $htmlPage1 = view('MPDF_Delivery.page-1',compact('data','request','statusDeliver','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
+            $htmlPage2 = view('MPDF_Delivery.page-2',compact('request','statusDeliver','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
+            $htmlPage3 = view('MPDF_Delivery.page-3',compact('request','statusDeliver','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
+            $htmlPage4 = view('MPDF_Delivery.page-4',compact('request','statusDeliver','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
             $mpdf->WriteHTML($htmlPage1);
             $mpdf->AddPage();
-            // สร้าง HTML สำหรับหน้าที่สอง
-            $htmlPage2 = view('MPDF_Delivery.page-2',compact('request','order','qrCodeImage','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'))->render();
             $mpdf->WriteHTML($htmlPage2);
+            $mpdf->AddPage();
+            $mpdf->WriteHTML($htmlPage3);
+            $mpdf->AddPage();
+            $mpdf->WriteHTML($htmlPage4);
             $mpdf->SetHTMLHeader('<script type="text/javascript">window.onload = function() { window.print(); }; </script>');
             return $mpdf->Output('document.pdf', 'I');
         } catch (\Exception $e) {

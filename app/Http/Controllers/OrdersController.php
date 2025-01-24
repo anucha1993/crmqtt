@@ -1,25 +1,26 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use DB;
 use Auth;
-use Carbon\Carbon;
 use Validator;
-
-use App\Models\Quotation;
-use App\Models\Products;
+use Carbon\Carbon;
 use App\Models\Orders;
-use App\Models\MasterCustomer;
-use App\Models\CustomerOther;
-use App\Models\OrderItmes;
-use App\Models\OrderDelivery;
-use App\Models\PaymentHistory;
-use App\Models\CustomerPocketHistory;
-use App\Models\DeliveryLocation;
-use App\Models\Notifications;
 use App\Events\SendNoti;
+
+use App\Models\Products;
+use App\Models\Quotation;
+use App\Models\OrderItmes;
+use Illuminate\Http\Request;
+use App\Models\CustomerOther;
+use App\Models\Notifications;
+use App\Models\OrderDelivery;
+use App\Models\printLogModel;
+use App\Models\MasterCustomer;
+use App\Models\PaymentHistory;
+use App\Models\DeliveryLocation;
+use App\Models\CustomerPocketHistory;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrdersController extends Controller
 {
@@ -520,7 +521,9 @@ class OrdersController extends Controller
 
         $paymentType = DB::table('payment_type')->get();
 
-        return view('orders.view',compact('paymentType','quotation','check_if_already_added_for_payment_history_of_OTP_flag','breadcrumb','location_contact_person_name','location_contact_person_phone_no','orders','customer','datas','datas_sub_total','delivery_location','i','pocketmoney','historypayment','sumpayment','orders_pera','orders_pera_sql','location_name'));
+        $printLogs = printLogModel::where('print_log_order_id',$id)->get();
+
+        return view('orders.view',compact('printLogs','paymentType','quotation','check_if_already_added_for_payment_history_of_OTP_flag','breadcrumb','location_contact_person_name','location_contact_person_phone_no','orders','customer','datas','datas_sub_total','delivery_location','i','pocketmoney','historypayment','sumpayment','orders_pera','orders_pera_sql','location_name'));
     }
 
 	public function update_payment_method_type_code(Request $request)

@@ -263,6 +263,8 @@
                                 </button> --}}
                                 <a href="{{url('receipt/'.$orders->id)}}" class="btn "><i
                                     class="fa fa-print" aria-hidden="true"></i> Print New</a>
+
+                                
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item"
                                         href="javascript:update_payment_method_type_code(1, '{{ $orders->id }}');"> One
@@ -277,6 +279,50 @@
                                     </a>
                                 </div>
                             </div>
+                            <a href="#"  data-toggle="modal" data-target="#logPirnt"> ประวัติการปริ้น</a>
+
+                            {{-- Log Print --}}
+                     <div class="modal fade" id="logPirnt" tabindex="-1" role="dialog"
+                     aria-labelledby="printPreviewModalTitle" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 ประวัติการปริ้น
+                             </div>
+                             <div class="modal-body" >
+                                
+                                   <table class="table table">
+                                    <thead>
+                                        <tr>
+                                            <th>ปริ้นครั้งที่</th>
+                                            <th>เลขที่บิลย่อย</th>
+                                            <th>สถานะ</th>
+                                            <th>วันที่ปริ้น</th>
+                                            <th>ผู้ปริ้น</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($printLogs as $log)
+                                        <tr>
+                                            <td>{{$log->print_log_count}}</td>
+                                            <td>{{$log->Delivery->order_delivery_number}}</td>
+                                            <td>{{$log->order_delivery_status}}</td>
+                                            <td>{{date('d/m/Y H:m:s',strtotime($log->created_at))}}</td>
+                                            <td>{{$log->User->name}}</td>
+                                        </tr>
+                                        @empty
+                                     
+                                        @endforelse
+                                    </tbody>
+
+                                   </table>
+                               
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+
                         </div>
                     </div>
                     <hr>
