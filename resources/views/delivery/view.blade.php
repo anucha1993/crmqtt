@@ -178,12 +178,7 @@
                                     </tbody>
 
                                    </table>
-                                   {{-- @forelse ($printLogs as $log)
-                                     <li style="font-size: 12px">({{$log->print_log_count}}) เลขที่บิลย่อย : {{$log->Delivery->order_delivery_number}} สถานะ : {{$log->order_delivery_status}} วันที่ : {{date('d/m/Y H:m:s',strtotime($log->created_at))}} ผู้ปริ้น : {{$log->User->name}}</li>
-                                 @empty
-                                     
-                                 @endforelse --}}
-                                 
+                               
                              </div>
                          </div>
                      </div>

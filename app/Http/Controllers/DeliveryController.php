@@ -468,7 +468,7 @@ class DeliveryController extends Controller
 				->where('orders.id',$deliverys->order_id)
 				->first();
 
-                $printLogs = printLogModel::where('print_log_order_id',$deliverys->order_id)->get();
+        $printLogs = printLogModel::where('print_log_order_id',$deliverys->order_id)->get();
         return view('delivery.view',compact('printLogs','paymentType','quotation','pirntCount','datas_chunk','check_if_already_updated_for_payment_method_of_order','check_if_already_added_for_payment_history_flag_or_not_update_payment_method_yet','breadcrumb','data_for_remarks','location_contact_person_name','location_contact_person_phone_no','i','datas','datas_sub_total_delivery','orders','deliverys','customer','location_name','delivery_location'));
     }
 
