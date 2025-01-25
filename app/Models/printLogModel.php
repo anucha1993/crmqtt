@@ -31,6 +31,10 @@ class printLogModel extends Model
      {
         return $this->hasOne(OrderDelivery::class,'order_delivery_id','print_log_delivery_id');
      }
+     public function Order()
+     {
+        return $this->hasOne(Orders::class,'id','print_log_order_id');
+     }
      public function User()
      {
         return $this->hasOne(users::class,'id','created_by');

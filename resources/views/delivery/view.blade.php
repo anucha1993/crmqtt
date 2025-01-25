@@ -158,6 +158,7 @@
                                         <tr>
                                             <th>ปริ้นครั้งที่</th>
                                             <th>เลขที่บิลย่อย</th>
+                                            <th>เลขที่บิลย่อย</th>
                                             <th>สถานะ</th>
                                             <th>วันที่ปริ้น</th>
                                             <th>ผู้ปริ้น</th>
@@ -167,6 +168,7 @@
                                         @forelse ($printLogs as $log)
                                         <tr>
                                             <td>{{$log->print_log_count}}</td>
+                                            <td>{{$log->Order->order_number}}</td>
                                             <td>{{$log->Delivery->order_delivery_number}}</td>
                                             <td>{{$log->order_delivery_status}}</td>
                                             <td>{{date('d/m/Y H:m:s',strtotime($log->created_at))}}</td>
