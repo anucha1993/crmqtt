@@ -149,7 +149,7 @@
             </tr>
             @endforeach
 
-            @for ($i = $j; $i <= 9; $i++)
+            @for ($i = $j+1; $i <= 9; ++$i)
             <tr>
                 <td align="center">{{ $i }}</td>
             </tr>

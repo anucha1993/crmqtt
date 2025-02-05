@@ -150,7 +150,7 @@
                 <td align="right">{{$request->price1 ? number_format($data->total_item_all,2) : '-'}}</td>
             </tr>
             @endforeach
-            @for ($i = $j; $i <= 9; $i++)
+            @for ($i = $j+1; $i <= 9; ++$i)
             <tr>
                 <td align="center">{{ $i }}</td>
             </tr>
