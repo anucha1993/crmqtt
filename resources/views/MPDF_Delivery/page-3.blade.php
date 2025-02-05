@@ -100,7 +100,7 @@
                 <td   style="border: 1px solid black; padding: 1px; text-align: left; width: 200px" >
                     <span><b>วันที่จัดส่ง : </b>{{date('d/m/Y',strtotime($deliverys->date_send))}}</span><br>
                     <span><b>เลขที่บิลหลัก :</b> {{$orders->order_number}}</span><br>
-                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}}</span><br>
+                    <span><b>เลขที่บิลย่อย :</b> {{$datas_chunk[0][0]->order_delivery_number}} {{$statusDeliver}}</span><br>
                     <span><b>Billno : </b>{{$pirntCount->print_count}}</span><br>
                 </td>
                 <td></td>
@@ -150,6 +150,14 @@
             </tr>
             @endforeach
 
+            @for ($i = $j; $i <= 9; $i++)
+            <tr>
+                <td align="center">{{ $i }}</td>
+            </tr>
+        @endfor
+
+
+            @if ($order->render_price == 'No')
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
@@ -201,6 +209,9 @@
                
             </tr>
 
+            @endif
+
+          
         </tbody>
        
         </table>
