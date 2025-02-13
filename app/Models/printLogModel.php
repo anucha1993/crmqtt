@@ -37,7 +37,7 @@ class printLogModel extends Model
      }
      public function User()
      {
-        return $this->hasOne(users::class,'id','created_by');
+        return $this->hasOne(Users::class,'id','created_by');
      }
 
 }
