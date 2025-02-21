@@ -87,7 +87,7 @@
     {{-- <div class="invoice-title">
         ใบเสร็จรับเงิน (ฉบับสำเนา 1)
     </div> --}}
-    <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14pt;">
+    <table class="table" style="width: 100%; border-collapse: collapse; font-size: 16pt; margin: -20px -20px 0px -20px">
         <thead>
             <tr>
                 <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 400px">
@@ -113,7 +113,7 @@
     </table>
 
     @foreach ($datas_chunk as $datas_chuck_item)
-      <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 16px;">
+    <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 20px; margin: 0px -20px 0px -20px">
         <thead>
             <tr style="background:#b9b9b90a; border:1px solid">
                 <th style="width: 10%; border:1px solid white;">ลำดับ</th>
@@ -152,7 +152,7 @@
 
             @for ($i = $j+1; $i <= 9; ++$i)
             <tr>
-                <td align="center">{{ $i }}</td>
+                <td align="center" style="color: white">{{ $i }}</td>
             </tr>
         @endfor
 
@@ -281,14 +281,14 @@
         </tr>
     </table> --}}
 
-    <div style="font-size: 18px">
+    <div style="font-size: 20px">
         <br>
         <span><b>หมายเหตุ :</b></span>
         <span>กรุณาตรวจสอบความถูกต้องของสินค้าและเซ็นรับสินค้าในวันที่ได้รับ หากไม่มีการตรวจสอบหรือเซ็นรับสินค้า
             ทางบริษัทขอสงวนสิทธิ์ในการรับผิดชอบต่อความผิดพลาดทุกกรณี</span>
     </div>
 
-    <table style="width: 100%; margin-top: 20px; font-size: 14pt; border-collapse: collapse;">
+    <table style="width: 100%; margin-top: 20px; font-size: 16pt; border-collapse: collapse;">
         <tr>
             <!-- คอลัมน์ซ้าย -->
 

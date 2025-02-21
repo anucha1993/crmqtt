@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>ใบส่งของ</title>
     <style>
+       
         .header {
             display: flex;
             justify-content: space-between;
@@ -88,10 +89,10 @@
     {{-- <div class="invoice-title">
         ใบเสร็จรับเงิน (ฉบับสำเนา 1)
     </div> --}}
-    <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14pt;">
+    <table class="table" style="width: 100%; border-collapse: collapse; font-size: 16pt; margin: -20px -20px 0px -20px">
         <thead>
             <tr>
-                <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 400px">
+                <td  style="border: 1px solid rgba(0, 0, 0, 0.048); padding: 2px; text-align: left; width: 400px ">
                     <span><b>ชื่อลูกค้า :</b> {{$customer->store_name}}</span><br>
                     <span><b>ที่อยู่จัดส่ง :</b> {{$location_name}}</span><br>
                     <span><b>ชื่อผู้ติดต่อ:</b> {{$location_contact_person_name}}</span><br>
@@ -114,7 +115,7 @@
     </table>
 
     @foreach ($datas_chunk as $datas_chuck_item)
-      <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 16px;">
+      <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 20px; margin: 0px -20px 0px -20px">
         <thead>
             <tr style="background:#b9b9b90a; border:1px solid">
                 <th style="width: 10%; border:1px solid white;">ลำดับ</th>
@@ -152,7 +153,7 @@
             @endforeach
             @for ($i = $j+1; $i <= 9; ++$i)
             <tr>
-                <td align="center">{{ $i }}</td>
+                <td align="center" style="color: white">{{ $i }}</td>
             </tr>
         @endfor
            
@@ -221,71 +222,16 @@
         @endforeach
         
 
-    {{-- <table style="width: 100%; margin-top: 20px; font-size: 14pt; border-collapse: collapse;">
-        <tr>
-            <!-- คอลัมน์ซ้าย -->
+    
 
-            <td style="width: 60%; vertical-align: top; padding-right: 20px;">
-                <p><strong>ประเภทการชำระเงิน : </strong> {!! PatmentType($order->payment_type) !!}</p>
-                @if ($order->payment_type == '1')
-                    {{-- <p><strong>จำนวนเงินทั้งสิ้นจากบิลหลัก : </strong> 15,000 บาท</p> 
-                    <p><strong>ชำระแล้ว : </strong> {{ number_format($paymentHistory->sum('total'), 2) }} บาท
-                        @if ($paymentHistory->sum('total') >= $order->total)
-                            (ชำระเงินครบแล้ว)
-                        @else
-                        @endif
-                    </p>
-                    @forelse ($paymentHistory as $key => $item)
-                        <p><strong>งวดที่ {{ $key + 1 }} : </strong> แจ้งชำระวันที่
-                            {{ date('d/m/Y', strtotime($item->created_at)) }} จำนวนเงิน
-                            {{ number_format($item->total, 2) }} บาท</p>
-                    @empty
-                    @endforelse
-                @else
-                @endif
-
-
-            </td>
-
-            <!-- คอลัมน์ขวา -->
-            <td style="width: 25%; vertical-align: top; text-align: right;">
-                <p><strong>มูลค่าสินค้าก่อนภาษีมูลค่าเพิ่ม: </strong> </p>
-                <p><strong>ส่วนลด:</strong></p>
-                <p><strong>จำนวนหลังหักส่วนลด:</strong></p>
-                <p><strong>ภาษีมูลค่าเพิ่ม:</strong></p>
-                <p><strong>มูลค่ารวม:</strong></p>
-            </td>
-
-            <td style="width: 15%; vertical-align: top; text-align: right;">
-                <p>{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }} บาท</p>
-                <p>{{ number_format($order->discount, 2) }} บาท</p>
-                <p>{{ number_format($order->price_all - $order->discount, 2) }} บาท</p>
-                <p>{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}
-                    บาท</p>
-                <p>{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }} บาท</p>
-
-            </td>
-        </tr>
-        <tr>
-
-            <td colspan="5" style="width: 50%; padding-right: 20px; text-align: right;">
-                <p><strong>จำนวนเงินทั้งสิ้น (ตัวอักษร)</strong> (@bathText($order->price_all))</p>
-            </td>
-
-        </tr>
-        <tr>
-
-        </tr>
-    </table> --}}
-
-    <div style="font-size: 18px">
+    <div style="font-size: 20px">
         <br>
         <span><b>หมายเหตุ :</b></span>
         <span>กรุณาตรวจสอบความถูกต้องของสินค้าและเซ็นรับสินค้าในวันที่ได้รับ หากไม่มีการตรวจสอบหรือเซ็นรับสินค้า
             ทางบริษัทขอสงวนสิทธิ์ในการรับผิดชอบต่อความผิดพลาดทุกกรณี</span>
     </div>
 
-    <table style="width: 100%; margin-top: 20px; font-size: 14pt; border-collapse: collapse;">
+    <table style="width: 100%; margin-top: 20px; font-size: 16pt; border-collapse: collapse;">
         <tr>
             <!-- คอลัมน์ซ้าย -->
 

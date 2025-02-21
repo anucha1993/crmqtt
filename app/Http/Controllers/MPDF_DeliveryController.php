@@ -291,7 +291,7 @@ class MPDF_DeliveryController extends Controller
             ]);
     
             // กำหนด Margin
-            $mpdf->SetMargins(10, 10, 10, 10);
+            $mpdf->SetMargins(-2.64, -2.64, 3, 0); 
 
             // สร้าง HTML สำหรับหน้าแรก
         
