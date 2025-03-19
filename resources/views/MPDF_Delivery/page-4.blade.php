@@ -125,7 +125,7 @@
         </thead>
     </table>
 
-    @foreach ($datas_chunk as $datas_chuck_item)
+   
     <table style="border:1px solid black;border-collapse:collapse; width: 100%; font-size: 20px; margin: 0px -20px 0px -20px">
         <thead>
             <tr style="background:#b9b9b90a; border:1px solid">
@@ -137,7 +137,7 @@
                 <th style="width: 10%; border:1px solid white;">จำนวน</th>
             </tr>
         </thead>
-
+        @foreach ($datas_chunk as $datas_chuck_item)
         <tbody>
             @php
             $j=0;
@@ -197,10 +197,10 @@
             </tr>
 
         </tbody>
-       
+        @endforeach
         </table>
 
-        @endforeach
+     
         
 
 
