@@ -137,37 +137,40 @@
                 <th style="width: 10%; border:1px solid white;">จำนวน</th>
             </tr>
         </thead>
-        @foreach ($datas_chunk as $datas_chuck_item)
+     
         <tbody>
             @php
-            $j=0;
-            $total = 0;
-            $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
-        @endphp
-        @foreach ($datas_chuck_item as $data)
-         
-        <?php
-            $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
-            if ($test_pera == 0) { continue;}
+                $j = 1; // เริ่มต้น j จาก 1 และอยู่นอก loop chunk
+                $total = 0;
+            @endphp
+            @foreach ($datas_chunk as $datas_chuck_item)
+                @php
+                    $diffTotal = ((count($datas_chuck_item) < 30) ? (30-count($datas_chuck_item)-6) : 0);
+                @endphp
+                @foreach ($datas_chuck_item as $data)
+                    <?php
+                        $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit*$data->price_item*$data->item_send_qty),2) : number_format(($data->size_unit*0.35*$data->price_item*$data->item_send_qty),2);
+                        if ($test_pera == 0) { continue;}
+                        $total += $data->total_item_all;
+                    ?>
+                    <tr>
+                        <td align="center">{{ $j++ }}</td> 
+                        <td align="center">{{$data->item_send_qty}}</td>
+                        <td align="center">{{countunitstr($data->count_unit)}}</td>
+                        <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
+                        <td align="center">{{$request->price1 ? number_format($data->price_item,2) : '-'}}</td>
+                        <td align="right">{{$request->price1 ? number_format($data->total_item_all,2) : '-'}}</td>
+                    </tr>
+                @endforeach
 
-            $total += $data->total_item_all;
-        ?>
-            
-            <tr>
-                <td align="center">{{++$j}}</td>
-                <td align="center">{{$data->item_send_qty}}</td>
-                <td align="center">{{countunitstr($data->count_unit)}}</td>
-                <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
-                <td align="center">{{number_format($data->price_item,2)}}</td>
-                <td align="right">{{number_format($data->total_item_all,2)}}</td>
-            </tr>
-            @endforeach
 
-            @for ($i = $j+1; $i <= 9; ++$i)
-            <tr>
-                <td align="center" style="color: white">{{ $i }}</td>
-            </tr>
-        @endfor
+                @endforeach
+
+                @for ($i = $j+1; $i <= 9; ++$i)
+                <tr>
+                    <td align="center" style="color: white">{{ $i }}</td>
+                </tr>
+                @endfor
            
 
             <tr>
@@ -195,9 +198,11 @@
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
             </tr>
+            
+         
 
         </tbody>
-        @endforeach
+   
         </table>
 
      
