@@ -141,7 +141,7 @@
                     $total += $data->total_item_all;
                 ?>
             <tr>
-                <td align="center">{{++$j}}</td>
+                <td align="center">{{$j++}}</td>
                 <td align="center">{{$data->item_send_qty}}</td>
                 <td align="center">{{countunitstr($data->count_unit)}}</td>
                 <td align="left">{{$data->product_name}} {{$data->size_unit.' '.$data->size_name.' '.$data->pera}}</td>
