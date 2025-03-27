@@ -156,22 +156,19 @@
                     <td align="right">{{ $request->price3 ? number_format($data->total_item_all, 2) : '-' }}</td>
                 </tr>
             @endforeach
-        
+            @endforeach
             @php
                 $rowsToAdd = 20 - $currentChunkRows; // คำนวณจำนวนแถวที่ต้องเพิ่ม
                 $j += $rowsToAdd; // ปรับค่า j ให้ถูกต้อง
                 $previousChunkRows = $currentChunkRows; // อัปเดตจำนวนแถวใน chunk ปัจจุบัน
             @endphp
         
-            @for ($i = 25; $i <= $rowsToAdd; $i++)
+            @for ($i = $currentChunkRows + 1; $i <= 7; $i++) // แก้ไขค่าเริ่มต้นของ $i และเงื่อนไขของลูป
                 <tr>
-                    <td align="center" style="color: rgb(230, 49, 49);">{{ $j - $rowsToAdd + $i }}</td>
+                    <td align="center" style="color: rgb(255, 255, 255);">{{ $i }}</td>
                     <td colspan="5">&nbsp;</td>
                 </tr>
-            @endfor 
-  
-               
-            @endforeach
+            @endfor
 
             @if ($request->price3)
             <tr>
