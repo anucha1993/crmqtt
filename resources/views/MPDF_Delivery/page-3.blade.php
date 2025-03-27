@@ -157,7 +157,7 @@
             </tr>
         @endfor
 
-            @if ($order->render_price == 'Yes')
+            @if ($order->price3)
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>

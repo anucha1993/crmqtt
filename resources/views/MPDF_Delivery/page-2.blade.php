@@ -158,11 +158,11 @@
             </tr>
         @endfor
           
-            @if ($order->render_price == 'Yes')
+            @if ($request->price2)
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
-                 @if ($request->price3)
+                 @if ($request->price2)
                  <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
                  @else
                  <td align="right" style="border:1px solid black;">-</td>
@@ -172,7 +172,7 @@
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ส่วนลด:</strong></td>
-                @if ($request->price3)
+                @if ($request->price2)
                 <td align="right" style="border:1px solid black;">{{ number_format($order->discount, 2) }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
@@ -182,7 +182,7 @@
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนหลังหักส่วนลด:</strong></td>
-                @if ($request->price3)
+                @if ($request->price2)
                 <td align="right" style="border:1px solid black;">{{ number_format($order->price_all - $order->discount, 2) }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
@@ -192,7 +192,7 @@
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ภาษีมูลค่าเพิ่ม:</strong></td>
-                @if ($request->price3)
+                @if ($request->price2)
                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
@@ -202,7 +202,7 @@
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
-                @if ($request->price3)
+                @if ($request->price2)
                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
