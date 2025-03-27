@@ -152,9 +152,13 @@
 
          
         
-
+            @for ($i = $j+1; $i <= 15; ++$i)
+            <tr>
+                <td align="center" style="color: white">{{ $i }}</td>
+            </tr>
+        @endfor
           
-            @if ($order->render_price == 'No')
+            @if ($order->render_price == 'Yes')
             <tr>
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
@@ -208,11 +212,7 @@
 
             @endif
             @endforeach
-            @for ($i = $j+1; $i <= 20; ++$i)
-            <tr>
-                <td align="center" style="color: white">{{ $i }}</td>
-            </tr>
-        @endfor
+           
 
 
         </tbody>
