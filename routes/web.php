@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboards\dashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\MPDF_DeliveryController;
@@ -107,6 +108,8 @@ Route::group(['middleware' => ['authweb']], function () {
 
     });
 
+    
+
 
 
     Route::group(['prefix' => 'customer'], function () {
@@ -174,3 +177,8 @@ Route::group(['middleware' => ['authweb']], function () {
      // MPDF_Delivery
      Route::post('mpdf/delivery/{id}',[MPDF_DeliveryController::class,'generateMPDF'])->name('MPDF.delivery');
 });
+
+Route::get('dashboard/quote-order', [DashboardController::class, 'quoteVsOrder'])->name('dashboard.quote-order');
+Route::get('quote-order-stats', [DashboardController::class, 'statsJson'])->name('dashboard.statsJson');
+Route::get('/quote-order-convert', [DashboardController::class, 'convertStats'])->name('dashboard.convert-stats');
+Route::get('/top-customers', [DashboardController::class, 'topCustomers'])->name('dashboard.top-customers');

@@ -18,6 +18,8 @@
   {{-- {!! Html::style('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') !!} --}}
   <!-- end plugin css -->
 
+
+
   @stack('plugin-styles')
 
   <!-- common css -->
@@ -60,6 +62,7 @@
   {!! Html::script('/plugins/daterangepicker/moment.min.js') !!}
   {!! Html::script('js/jquery.min.js') !!}
   {!! Html::script('/plugins/daterangepicker/daterangepicker.min.js') !!}
+  
   <!-- plugin js -->
     @stack('plugin-scripts')
   <!-- end plugin js -->

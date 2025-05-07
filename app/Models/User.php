@@ -57,4 +57,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Roles::class,'role_id');
     }
+
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'created_by', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Orders::class, 'created_by', 'id');
+    }
 }

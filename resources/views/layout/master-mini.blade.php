@@ -14,6 +14,7 @@
   <!-- plugin css -->
   {!! Html::style('assets/plugins/@mdi/font/css/materialdesignicons.min.css') !!}
   {!! Html::style('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') !!}
+  
   <!-- end plugin css -->
 
   <!-- plugin css -->

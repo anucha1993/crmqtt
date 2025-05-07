@@ -2,6 +2,15 @@
   <ul class="nav sidebar-nav">
     <li class="nav-item nav-profile not-navigation-link">
     </li>
+
+    <li class="nav-item sidebar-nav-item quotation-meun {{ active_class(['dashboard.quote-order']) }} ">
+      <a class="nav-link sidebar-nav-item" href="{{ route('dashboard.quote-order') }}">
+        {{-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> --}}
+        <i class="mdi mdi-layers"></i>
+        <label class="sidebar-title menu-title">หน้าหลัก</label>
+      </a>
+    </li>
+
     <li class="nav-item sidebar-nav-item quotation-meun {{ active_class(['quotation']) }} ">
       <a class="nav-link sidebar-nav-item" href="{{ url('quotation') }}">
         {{-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> --}}
