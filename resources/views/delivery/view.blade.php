@@ -723,7 +723,7 @@
                     <form action="{{ route('payment.store') }}" enctype="multipart/form-data" id="paymnet-store"
                         method="POST">
                         @csrf
-                        @method('POST')
+
                         <div class="modal-body">
 
                             <input type="hidden" name="order_id" value="{{ $orders->id }}">

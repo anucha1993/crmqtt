@@ -61,3 +61,8 @@ Route::group(['prefix' => 'products'], function () {
     Route::post('/list', 'ProductController@list')->name('products.list');
     
 });
+
+
+
+
+

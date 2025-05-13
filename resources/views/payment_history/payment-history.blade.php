@@ -83,7 +83,7 @@
                       <th> ยอดชำระ </th>
                       <th> สถานะการชำระเงิน </th>
                       <th> ไฟล์แนบ </th>
-                      <th> จัดการ </th>
+                      {{-- <th> จัดการ </th> --}}
                     </tr>
                   </thead>
                   <tbody>
@@ -118,8 +118,8 @@
                             <td>
                                 @if (Auth::user()->role_id === 1)
                                 @if ($item->status === 3)
-                                <a href="{{route('payment.approvePayment',$item->id)}}"  onclick="return confirm('คุณต้องการอนุมัติยอดชำระ : ' + {{$item->total}} +' ใช่ไหม')" class="btn btn-sm btn-success "> ยืนยันยอด</a>
-                                <a href="{{route('payment.cancelPayment',$item->id)}}" class="btn btn-sm btn-danger " onclick="return confirm('คุณต้องการยกเลิกใช่ หรือไม่ ?')" > ยกเลิกยอด</a>
+                                {{-- <a href="{{route('payment.approvePayment',$item->id)}}"  onclick="return confirm('คุณต้องการอนุมัติยอดชำระ : ' + {{$item->total}} +' ใช่ไหม')" class="btn btn-sm btn-success "> ยืนยันยอด</a> --}}
+                                {{-- <a href="{{route('payment.cancelPayment',$item->id)}}" class="btn btn-sm btn-danger " onclick="return confirm('คุณต้องการยกเลิกใช่ หรือไม่ ?')" > ยกเลิกยอด</a> --}}
                                 @elseif ($item->status === 4)
                                 <span class="dot close"></span> ไม่อนุมัติ
                                 @elseif ($item->status === 1)

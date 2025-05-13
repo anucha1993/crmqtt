@@ -64,7 +64,12 @@ class DeliveryController extends Controller
         }
         
         $breadcrumb = [['url'=>'orders','title'=>'รายการบิลหลัก'],['url'=>'orders/view/'.$order->id,'title'=>'รายการบิลหลัก '.$order->order_number],['url'=>'','title'=>'บิลย่อย']];
-        return view('delivery.list',compact('order','quotation','customer','breadcrumb','datas'));
+         $deliverys = OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
+        ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
+        ->where('order_delivery.order_delivery_id',$id)->first();
+        $paymentType = DB::table('payment_type')->get();
+		
+        return view('delivery.list',compact('order','quotation','customer','breadcrumb','datas','deliverys','paymentType'));
     }
 
     public function add($id)
@@ -230,7 +235,7 @@ class DeliveryController extends Controller
         $addpaymenthistory['file']= $orderdelivery->file;
         $addpaymenthistory['created_at']= Carbon::now();
         $addpaymenthistory['created_by']= Auth::user()->id;
-        PaymentHistory::create($addpaymenthistory);
+        // PaymentHistory::create($addpaymenthistory);
 
 
         if($order->payment_type == 4)
@@ -443,9 +448,9 @@ class DeliveryController extends Controller
             $customer = CustomerOther::where('id',$quotation->customer_id)->first();
         }
 
-        $deliverys = OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
-        ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
-        ->where('order_delivery.order_delivery_id',$id)->first();
+        // $deliverys = OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
+        // ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
+        // ->where('order_delivery.order_delivery_id',$id)->first();
 		
 		// $deliverys = OrderDelivery::select('order_delivery.*')
         // #->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
@@ -460,6 +465,9 @@ class DeliveryController extends Controller
         $pirntCount = Form::first();
         $paymentType = DB::table('payment_type')->get();
         //dd($pirntCount->print_count);
+
+        $deliverys = OrderDelivery::where('order_delivery.order_delivery_id',$id)->first();
+
         $orders = Orders::find($deliverys->order_id);
         $breadcrumb = [['url'=>'orders','title'=>'รายการบิลหลัก'],['url'=>'orders/view/'.$deliverys->order_id,'title'=>'บิลหลัก '.$orders->order_number],['url'=>'orders/delivery/list/'.$deliverys->order_id,'title'=>'บิลย่อย'],['url'=>'','title'=>'รายละเอียดบิลย่อย']];
         $i = 1;

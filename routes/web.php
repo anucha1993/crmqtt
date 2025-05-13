@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\api_paymentController;
 use App\Http\Controllers\dashboards\dashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
@@ -182,3 +183,7 @@ Route::get('dashboard/quote-order', [DashboardController::class, 'quoteVsOrder']
 Route::get('quote-order-stats', [DashboardController::class, 'statsJson'])->name('dashboard.statsJson');
 Route::get('/quote-order-convert', [DashboardController::class, 'convertStats'])->name('dashboard.convert-stats');
 Route::get('/top-customers', [DashboardController::class, 'topCustomers'])->name('dashboard.top-customers');
+
+Route::group(['middleware' => ['authweb']], function () {
+Route::get('payment/create/{id}',[api_paymentController::class,'create'])->name('payment.create');
+});
