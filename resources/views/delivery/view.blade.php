@@ -309,6 +309,7 @@
                                         <p class="col-sm-6 warning-text text-right">
                                             {{ $orders->on_vat == 1 || $quotation->qo_on_vat == 'Y' ? number_format($orders->vat, 2) : '0.00' }}
                                         </p>
+                                        
                                         <p class="col-sm-6 warning-text">ยอดสั่งซื้อรวมทั้งสิ้น</p>
                                         <p class="col-sm-6 warning-text text-right" id="order_total_all">
                                             {{ number_format($orders->total, 2) }}</p>
@@ -333,6 +334,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-inline left-border bottom-border">
                                         <p class="col-sm-6 m-t-15 warning-text">ยอดในบิลย่อยครั้งนี้</p>
+                                        
                                         <p class="col-sm-6 m-t-15 warning-text text-right" id="total_long_order">0.00</p>
                                         <p class="col-sm-6 warning-text">
                                             <input type="checkbox" disabled {{ $orders->on_vat == 1 ? 'checked' : '' }}
@@ -755,7 +757,7 @@
                                 value="{{ date('Y-m-d H:m:s') }}">
 
                             <label for="">แนบหลักฐานกาารชำระ</label><br>
-                            <input type="file" name="file">
+                            <input type="file" name="file" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>

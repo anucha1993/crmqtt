@@ -129,6 +129,8 @@
             @php
             $j = 1; // เริ่มต้น j จาก 1 และอยู่นอก loop chunk
             $total = 0;
+            $Grandtotal = 0;
+            
             $previousChunkRows = 0; // เก็บจำนวนแถวจาก chunk ก่อนหน้า
         @endphp
         
@@ -140,6 +142,9 @@
         
             @foreach ($datas_chuck_item as $data)
                 <?php
+                   $Grandtotal += $data->product_type_id == 1
+    ? ($data->size_unit * $data->price_item * $data->item_send_qty)
+    : ($data->size_unit * 0.35 * $data->price_item * $data->item_send_qty);
                     $test_pera = ($data->product_type_id == 1) ? number_format(($data->size_unit * $data->price_item * $data->item_send_qty), 2) : number_format(($data->size_unit * 0.35 * $data->price_item * $data->item_send_qty), 2);
                     if ($test_pera == 0) {
                         continue;
@@ -153,7 +158,14 @@
                     <td align="center">{{ countunitstr($data->count_unit) }}</td>
                     <td align="left">{{ $data->product_name }} {{ $data->size_unit . ' ' . $data->size_name . ' ' . $data->pera }}</td>
                     <td align="center">{{ $request->price3 ? number_format($data->price_item, 2) : '-' }}</td>
-                    <td align="right">{{ $request->price3 ? number_format($data->total_item_all, 2) : '-' }}</td>
+                     <td align="right">
+                        @if ($request->price1)
+                             {{ $data->product_type_id == 1 ? number_format($data->size_unit * $data->price_item * $data->item_send_qty, 2) : number_format($data->size_unit * 0.35 * $data->price_item * $data->item_send_qty, 2) }}
+                        @else
+                            - 
+                        @endif
+          
+                    </td>
                 </tr>
             @endforeach
             @endforeach
@@ -175,7 +187,7 @@
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ราคาก่อนภาษี: </strong></td>
                  @if ($request->price3)
-                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->price_all, 2) }}</td>
+                 <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($Grandtotal, 2) }}</td>
                  @else
                  <td align="right" style="border:1px solid black;">-</td>
                  @endif
@@ -195,7 +207,7 @@
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนหลังหักส่วนลด:</strong></td>
                 @if ($request->price3)
-                <td align="right" style="border:1px solid black;">{{ number_format($order->price_all - $order->discount, 2) }}</td>
+                <td align="right" style="border:1px solid black;">{{ number_format($Grandtotal - $order->discount, 2) }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
                 @endif
@@ -205,7 +217,7 @@
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>ภาษีมูลค่าเพิ่ม:</strong></td>
                 @if ($request->price3)
-                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($order->vat, 2) : '0.00') }}</td>
+                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : ($order->on_vat == 1 ? number_format($Grandtotal*7/100, 2) : '0.00') }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
                 @endif
@@ -215,7 +227,7 @@
                 <td colspan="4"></td>
                 <td style="border:1px solid black; text-align: right;"><strong>จำนวนเงินทั้งสิน:</strong></td>
                 @if ($request->price3)
-                <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' : number_format($order->total, 2) }}</td>
+               <td align="right" style="border:1px solid black;">{{ $order->render_price == 'No' ? 'n/a' :($order->on_vat == 1 ? number_format($Grandtotal+ ($Grandtotal*7/100), 2) :  number_format($Grandtotal,2)) }}</td>
                 @else
                 <td align="right" style="border:1px solid black;">-</td>
                 @endif
