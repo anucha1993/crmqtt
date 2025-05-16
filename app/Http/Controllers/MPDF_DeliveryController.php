@@ -213,9 +213,10 @@ class MPDF_DeliveryController extends Controller
             $customer = CustomerOther::where('id',$quotation->customer_id)->first();
         }
 
-        $deliverys = OrderDelivery::select('order_delivery.*','payment_history.status as status_payment')
-        ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
+        $deliverys = OrderDelivery::select('order_delivery.*')
+        // ->join('payment_history','payment_history.order_delivery_id','=','order_delivery.order_delivery_id')
         ->where('order_delivery.order_delivery_id',$id)->first();
+
 		$checkStock = $data->item_number_order - $data->item_send;
         $statusDeliver = $checkStock <= 0 ? '- ส่งครบ' : '';
 
@@ -228,6 +229,7 @@ class MPDF_DeliveryController extends Controller
             $checkCountPrint = Form::where('name', 'delivery')->first();
             $countNew = $checkCountPrint->print_count + 1;
             $checkCountPrint->update(['print_count' => $countNew]);
+            //dd($id);
     
             printLogModel::create([
                 'print_log_type' => 'delivery',
