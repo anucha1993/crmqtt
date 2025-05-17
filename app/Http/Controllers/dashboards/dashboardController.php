@@ -80,10 +80,10 @@ class dashboardController extends Controller
         ->groupBy('customer_id')
         ->orderByDesc('order_count')
         ->limit(10)
-        ->with('Customer:id,customer_name')        // สมมติชื่อลูกค้าอยู่ในฟิลด์ customer_name
+        ->with('Customer:id,store_name')        // สมมติชื่อลูกค้าอยู่ในฟิลด์ customer_name
         ->get()
         ->map(fn ($row) => [
-              'name'  => $row->Customer->customer_name ?? 'ไม่ทราบ',
+              'name'  => $row->Customer->store_name ?? 'ไม่ทราบ',
               'count' => (int) $row->order_count,
         ]);
 

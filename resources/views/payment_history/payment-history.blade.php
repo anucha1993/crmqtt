@@ -121,7 +121,7 @@
                                 {{-- <a href="{{route('payment.approvePayment',$item->id)}}"  onclick="return confirm('คุณต้องการอนุมัติยอดชำระ : ' + {{$item->total}} +' ใช่ไหม')" class="btn btn-sm btn-success "> ยืนยันยอด</a> --}}
                                 {{-- <a href="{{route('payment.cancelPayment',$item->id)}}" class="btn btn-sm btn-danger " onclick="return confirm('คุณต้องการยกเลิกใช่ หรือไม่ ?')" > ยกเลิกยอด</a> --}}
                                 @elseif ($item->status === 4)
-                                <span class="dot close"></span> ไม่อนุมัติ
+                                <span class="dot close"></span> {{$item->note}}
                                 @elseif ($item->status === 1)
                                 <span class="dot approve"></span> ทำรายการสำเร็จ
                                 @endif
