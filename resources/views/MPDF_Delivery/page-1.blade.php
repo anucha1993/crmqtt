@@ -179,6 +179,7 @@
                    
                 </tr>
             @endforeach
+           
             @endforeach
             @php
                 $rowsToAdd = 20 - $currentChunkRows; // คำนวณจำนวนแถวที่ต้องเพิ่ม
@@ -198,6 +199,7 @@
                     <td colspan="5">&nbsp;</td>
                 </tr>
             @endfor
+           
        
       
       
@@ -267,7 +269,12 @@
         
         
 
-    
+     <div style="font-size: 20px">
+        <br>
+        <span><b>หมายเหตุ :</b></span>
+        <span>{{$order->note}}</span>
+    </div>
+    <hr>
 
     <div style="font-size: 20px">
         <br>

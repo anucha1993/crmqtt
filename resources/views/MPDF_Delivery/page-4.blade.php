@@ -234,7 +234,12 @@
 
 
 
-    
+    <div style="font-size: 20px">
+        <br>
+        <span><b>หมายเหตุ :</b></span>
+        <span>{{$order->note}}</span>
+    </div>
+    <hr>
 
     <div style="font-size: 20px">
         <br>
